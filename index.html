@@ -2,6 +2,8 @@
 <html lang="sk">
 <head>
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SYX0HGGMWM"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -9,8 +11,11 @@ function gtag(){dataLayer.push(arguments);}
 gtag('consent', 'default', {
   'analytics_storage': 'denied'
 });
+
+gtag('js', new Date());
+gtag('config', 'G-SYX0HGGMWM');
 </script>
-    
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shpilka</title>
@@ -22,7 +27,7 @@ body {
     background: #0b1a2b;
     color: #e2e8f0;
 }
-
+  
 /* HERO */
 .hero {
     background: url('banner.jpg') center/cover;
@@ -183,6 +188,8 @@ input {
 
 <body>
 
+
+
 <!-- HERO -->
 <div class="hero">
 <img src="logo.jpg">
@@ -278,11 +285,6 @@ function calc(input, price){
     input.nextElementSibling.innerText = val ? val*price + " €" : "0 €";
 }
 
-function loadGTM(){
-    let s=document.createElement('script');
-    s.src='https://www.googletagmanager.com/gtm.js?id=GTM-MSQ66G4G';
-    document.head.appendChild(s);
-}
 
 function acceptCookies(){
     localStorage.setItem("cookies","accepted");
@@ -294,7 +296,7 @@ function acceptCookies(){
         'analytics_storage': 'granted'
     });
 
-    loadGTM();
+   
 }
 
 function declineCookies(){
@@ -304,7 +306,7 @@ function declineCookies(){
 
 window.addEventListener("load", function(){
     const c = localStorage.getItem("cookies");
-    if(c==="accepted"){ loadGTM(); }
+    if(c==="accepted"){  }
     if(!c){ document.getElementById("cookieBox").style.display="block"; }
 });
 </script>
