@@ -7,11 +7,6 @@
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
-
-gtag('consent', 'default', {
-  'analytics_storage': 'denied'
-});
-
 gtag('js', new Date());
 gtag('config', 'G-SYX0HGGMWM');
 </script>
@@ -27,8 +22,7 @@ body {
     background: #0b1a2b;
     color: #e2e8f0;
 }
-  
-/* HERO */
+
 .hero {
     background: url('banner.jpg') center/cover;
     height: 420px;
@@ -43,24 +37,16 @@ body {
 
 .hero img { width: 120px; }
 
-.hero h1 {
-    font-size: 38px;
-    margin:10px 0;
-}
+.hero h1 { font-size: 38px; margin:10px 0; }
 
-.hero p {
-    color: #cbd5f5;
-    margin:5px 0;
-}
+.hero p { color: #cbd5f5; margin:5px 0; }
 
-/* CONTAINER */
 .container {
     max-width: 900px;
     margin: auto;
     padding: 20px;
 }
 
-/* TEXT */
 .text {
     background: rgba(255,255,255,0.05);
     padding: 22px;
@@ -69,32 +55,18 @@ body {
     line-height:1.6;
 }
 
-/* CTA BUTTON */
 .cta-btn {
     display:block;
     text-align:center;
-    background: linear-gradient(135deg, #22c55e, #15803d);
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
     padding:20px;
     border-radius:16px;
     margin-top:20px;
     color:white;
     font-weight:600;
     text-decoration:none;
-    font-size:17px;
-    box-shadow: 
-        0 10px 30px rgba(34,197,94,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.2);
-    transition: all 0.25s ease;
 }
 
-.cta-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-        0 15px 40px rgba(34,197,94,0.5),
-        inset 0 1px 0 rgba(255,255,255,0.3);
-}
-
-/* CARD */
 .card {
     background: rgba(255,255,255,0.04);
     padding: 14px;
@@ -118,14 +90,12 @@ input {
     border: none;
 }
 
-/* INFO */
 .info {
     margin-top: 20px;
     color: #94a3b8;
     font-size: 14px;
 }
 
-/* FLOAT BUTTONS */
 .floating-buttons {
     position: fixed;
     bottom: 20px;
@@ -133,7 +103,6 @@ input {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index:1000;
 }
 
 .floating-buttons a {
@@ -145,138 +114,67 @@ input {
     align-items: center;
     background: rgba(255,255,255,0.08);
 }
-
-/* COOKIE */
-.cookie-box {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    max-width: 420px;
-    margin: auto;
-    background: #020617;
-    padding: 18px;
-    border-radius: 14px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-    display: none;
-    z-index: 9999;
-}
-
-.cookie-buttons {
-    display:flex;
-    gap:10px;
-    margin-top:10px;
-}
-
-.cookie-buttons button {
-    flex:1;
-    padding:10px;
-    border:none;
-    border-radius:8px;
-}
-
-.accept { background:#4ade80; }
-.decline { background:#1e293b; color:white; }
-
-/* MOBILE */
-@media (max-width:600px){
-.card { flex-direction:column; align-items:flex-start; }
-.right { width:100%; justify-content:space-between; }
-}
 </style>
 </head>
 
 <body>
 
-
-
-<!-- HERO -->
 <div class="hero">
 <img src="logo.jpg">
 <h1>SHPILKA</h1>
 <p>Rýchla realizácia • Férové ceny • Profesionálny prístup</p>
-<p style="font-size:14px; color:#94a3b8;">
-</p>
 </div>
 
 <div class="container">
 
 <div class="text">
-Realizujeme kompletné interiérové práce pre byty, domy a komerčné priestory v Bratislave a okolí.
+Realizujeme kompletné interiérové práce pre byty, domy a komerčné priestory.
 
-Zameriavame sa na kvalitu, precíznosť a spoľahlivosť. Každú zákazku riešime individuálne.
-
-Ponúkame bezplatnú obhliadku a nezáväznú cenovú ponuku.
-
-Kontaktujte nás a radi vám pomôžeme s vaším projektom.
-
-<a href="dopyt.html" class="cta-btn">
- Online cenová ponuka
-</a>
+<a href="dopyt.html" class="cta-btn">🚀 Online cenová ponuka</a>
 </div>
 
 <h2>Cenník prác</h2>
 
-<!-- PRICES -->
-<div class="card"><div class="left">SDK stena (Na komplet)<span class="price">od 24 €/m²</span></div><div class="right"><input oninput="calc(this,24)"><span>0 €</span></div></div>
-<div class="card"><div class="left">SDK strop (Na komplet)<span class="price">od 19 €/m²</span></div><div class="right"><input oninput="calc(this,19)"><span>0 €</span></div></div>
-<div class="card"><div class="left">SDK predstena (Na komplet)<span class="price">od 16 €/m²</span></div><div class="right"><input oninput="calc(this,16)"><span>0 €</span></div></div>
+<!-- ВСІ ТВОЇ РОБОТИ -->
+<div class="card"><div class="left">SDK stena<span class="price">24 €/m²</span></div><div class="right"><input oninput="calc(this,24)"><span>0 €</span></div></div>
+<div class="card"><div class="left">SDK strop<span class="price">19 €/m²</span></div><div class="right"><input oninput="calc(this,19)"><span>0 €</span></div></div>
+<div class="card"><div class="left">SDK predstena<span class="price">16 €/m²</span></div><div class="right"><input oninput="calc(this,16)"><span>0 €</span></div></div>
 
-<div class="card"><div class="left">Omietka štuk<span class="price">od 7 €/m²</span></div><div class="right"><input oninput="calc(this,7)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Stierka 1x<span class="price">od 6 €/m²</span></div><div class="right"><input oninput="calc(this,6)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Stierka 2x<span class="price">od 10 €/m²</span></div><div class="right"><input oninput="calc(this,10)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Brúsenie<span class="price">od 4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Penetrácia stien<span class="price">od 1 €/m²</span></div><div class="right"><input oninput="calc(this,1)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Maľovanie 1x<span class="price">od 2 €/m²</span></div><div class="right"><input oninput="calc(this,2)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Maľovanie 2x<span class="price">od 4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Omietka štuk<span class="price">7 €/m²</span></div><div class="right"><input oninput="calc(this,7)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Stierka 1x<span class="price">6 €/m²</span></div><div class="right"><input oninput="calc(this,6)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Stierka 2x<span class="price">10 €/m²</span></div><div class="right"><input oninput="calc(this,10)"><span>0 €</span></div></div>
 
-<div class="card"><div class="left">Kazetový strop<span class="price">od 18 €/m²</span></div><div class="right"><input oninput="calc(this,18)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Napínaný strop<span class="price">od 30 €/m²</span></div><div class="right"><input oninput="calc(this,30)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Brúsenie<span class="price">4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Penetrácia<span class="price">1 €/m²</span></div><div class="right"><input oninput="calc(this,1)"><span>0 €</span></div></div>
 
-<div class="card"><div class="left">Nivelácia<span class="price">od 4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Laminát<span class="price">od 10 €/m²</span></div><div class="right"><input oninput="calc(this,10)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Vinyl<span class="price">od 12 €/m²</span></div><div class="right"><input oninput="calc(this,12)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Maľovanie 1x<span class="price">2 €/m²</span></div><div class="right"><input oninput="calc(this,2)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Maľovanie 2x<span class="price">4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
 
-<div class="card"><div class="left">Dlažba<span class="price">od 25 €/m²</span></div><div class="right"><input oninput="calc(this,25)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Veľkoformát<span class="price">od 40 €/m²</span></div><div class="right"><input oninput="calc(this,40)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Obklad kúpeľňa<span class="price">od 30 €/m²</span></div><div class="right"><input oninput="calc(this,30)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Kazetový strop<span class="price">18 €/m²</span></div><div class="right"><input oninput="calc(this,18)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Napínaný strop<span class="price">30 €/m²</span></div><div class="right"><input oninput="calc(this,30)"><span>0 €</span></div></div>
 
-<div class="card"><div class="left">Montáž dverí<span class="price">od 70 €</span></div><div class="right"><input oninput="calc(this,70)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Montáž okien<span class="price">od 100 €</span></div><div class="right"><input oninput="calc(this,100)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Nivelácia<span class="price">4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Laminát<span class="price">10 €/m²</span></div><div class="right"><input oninput="calc(this,10)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Vinyl<span class="price">12 €/m²</span></div><div class="right"><input oninput="calc(this,12)"><span>0 €</span></div></div>
+
+<div class="card"><div class="left">Dlažba<span class="price">25 €/m²</span></div><div class="right"><input oninput="calc(this,25)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Veľkoformát<span class="price">40 €/m²</span></div><div class="right"><input oninput="calc(this,40)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Obklad kúpeľňa<span class="price">30 €/m²</span></div><div class="right"><input oninput="calc(this,30)"><span>0 €</span></div></div>
+
+<div class="card"><div class="left">Montáž dverí<span class="price">70 €</span></div><div class="right"><input oninput="calc(this,70)"><span>0 €</span></div></div>
+<div class="card"><div class="left">Montáž okien<span class="price">100 €</span></div><div class="right"><input oninput="calc(this,100)"><span>0 €</span></div></div>
 
 <div class="info">
-*Ceny sú orientačné a závisia od náročnosti práce.<br><br>
-Realizujeme aj ďalšie práce, ktoré nie sú uvedené v tomto cenníku.
+*Ceny sú orientačné
 </div>
 
-<!-- SECOND CTA -->
-<div style="margin-top:60px;">
-
-<h3 style="text-align:center; margin-bottom:10px;">
-Máte projekt? Poďme to vyriešiť 👇
-</h3>
-
-<a href="dopyt.html" class="cta-btn">
-💰 Zistiť cenu projektu
-</a>
+<a href="dopyt.html" class="cta-btn">💰 Zistiť cenu projektu</a>
 
 </div>
 
-</div>
-
-<!-- FLOAT BUTTONS -->
 <div class="floating-buttons">
 <a href="tel:+421951729585">📞</a>
 <a href="https://wa.me/421951729585">💬</a>
-</div>
-
-<!-- COOKIE -->
-<div id="cookieBox" class="cookie-box">
-Používame cookies na analýzu návštevnosti
-<div class="cookie-buttons">
-<button class="accept" onclick="acceptCookies()">Prijať</button>
-<button class="decline" onclick="declineCookies()">Odmietnuť</button>
-</div>
 </div>
 
 <script>
@@ -284,31 +182,6 @@ function calc(input, price){
     let val = input.value;
     input.nextElementSibling.innerText = val ? val*price + " €" : "0 €";
 }
-
-
-function acceptCookies(){
-    localStorage.setItem("cookies","accepted");
-    document.getElementById("cookieBox").style.display="none";
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'update', {
-        'analytics_storage': 'granted'
-    });
-
-   
-}
-
-function declineCookies(){
-    localStorage.setItem("cookies","declined");
-    document.getElementById("cookieBox").style.display="none";
-}
-
-window.addEventListener("load", function(){
-    const c = localStorage.getItem("cookies");
-    if(c==="accepted"){  }
-    if(!c){ document.getElementById("cookieBox").style.display="block"; }
-});
 </script>
 
 </body>
