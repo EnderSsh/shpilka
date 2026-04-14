@@ -2,6 +2,15 @@
 <html lang="sk">
 <head>
 
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+
+gtag('consent', 'default', {
+  'analytics_storage': 'denied'
+});
+</script>
+    
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shpilka</title>
@@ -278,6 +287,13 @@ function loadGTM(){
 function acceptCookies(){
     localStorage.setItem("cookies","accepted");
     document.getElementById("cookieBox").style.display="none";
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'update', {
+        'analytics_storage': 'granted'
+    });
+
     loadGTM();
 }
 
