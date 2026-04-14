@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dopyt - SHPILKA</title>
+
+<!-- Uploadcare -->
+<script>
+UPLOADCARE_PUBLIC_KEY = '78744bcd2979b7b29ecc';
+UPLOADCARE_MULTIPLE = true;
+</script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
+<style>
+body {
+    margin:0;
+    font-family: Inter, Arial;
+    background:#0b1a2b;
+    color:#e2e8f0;
+}
+
+.container {
+    max-width:600px;
+    margin:auto;
+    padding:20px;
+}
+
+/* BACK BUTTON */
+.back {
+    display:inline-block;
+    margin-bottom:15px;
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:14px;
+}
+.back:hover {
+    color:white;
+}
+
+.block {
+    background: rgba(255,255,255,0.05);
+    padding:25px;
+    border-radius:12px;
+}
+
+h2 {
+    text-align:center;
+}
+
+label {
+    display:block;
+    margin-top:15px;
+}
+
+input, textarea, select {
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:8px;
+    border:none;
+}
+
+textarea {
+    resize:vertical;
+}
+
+.btn {
+    width:100%;
+    background:#4ade80;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    margin-top:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.hint {
+    font-size:12px;
+    color:#94a3b8;
+}
+
+/* popup */
+.popup {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.popup-box {
+    position:relative;
+    background:#020617;
+    padding:25px;
+    border-radius:12px;
+    max-width:400px;
+    text-align:center;
+}
+
+.close {
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:none;
+    border:none;
+    color:#94a3b8;
+    font-size:18px;
+    cursor:pointer;
+}
+.close:hover {
+    color:white;
+}
+
+.call-btn {
+    display:block;
+    margin-top:15px;
+    background:#4ade80;
+    padding:12px;
+    border-radius:8px;
+    color:black;
+    text-decoration:none;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- BACK BUTTON -->
+<a href="#" onclick="history.back()" class="back">← Späť</a>
+
+<div class="block">
+
+<h2>Orientačná cenová ponuka</h2>
+
+<form id="mainForm"
+action="https://formspree.io/f/mkokgrrq"
+method="POST"
+target="hidden_iframe">
+
+<label>Meno</label>
+<input type="text" name="name" required>
+
+<label>Telefón alebo email</label>
+<input type="text" name="contact" required>
+
+<label>Typ projektu</label>
+<select name="type">
+<option>Byt</option>
+<option>Dom</option>
+<option>Komerčný priestor</option>
+</select>
+
+<label>Rozloha (m²)</label>
+<input type="number" name="area">
+
+<label>Materiál</label>
+<select name="material">
+<option>Zabezpečím sám</option>
+<option>Potrebujem zabezpečiť</option>
+<option>Dohodou</option>
+</select>
+
+<label>Popis práce</label>
+<textarea name="message" rows="4"></textarea>
+
+<label>Priložiť súbory (foto / video)</label>
+<input type="hidden" role="uploadcare-uploader" name="files" />
+
+<div class="hint">
+Môžete priložiť viac súborov (foto, video, projekt)
+</div>
+
+<button type="submit" class="btn">📩 Odoslať dopyt</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- popup -->
+<div id="popup" class="popup">
+<div class="popup-box">
+
+<button class="close" onclick="closePopup()">✕</button>
+
+<h3 style="font-size:22px;">Ďakujeme 👍</h3>
+
+<p style="margin-top:10px;">
+Vaša žiadosť bola úspešne odoslaná.
+</p>
+
+<p style="margin-top:10px; color:#94a3b8;">
+Ozveme sa vám čo najskôr s cenovou ponukou.
+</p>
+
+<div style="margin-top:20px; font-size:13px; color:#64748b;">
+📞 Ak je to súrne, môžete nám zavolať
+</div>
+
+<a href="tel:+421951729585" class="call-btn">
+Zavolať teraz
+</a>
+
+</div>
+</div>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
+<script>
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+}
+
+document.getElementById("mainForm").addEventListener("submit", function(){
+    setTimeout(() => {
+        document.getElementById("popup").style.display = "flex";
+        document.getElementById("mainForm").reset();
+    }, 800);
+});
+</script>
+
+</body>
+</html>
