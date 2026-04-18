@@ -1,196 +1,361 @@
 <!DOCTYPE html>
+
 <html lang="sk">
 <head>
-
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SYX0HGGMWM"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-SYX0HGGMWM');
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shpilka</title>
+<title>SHPILKA</title>
+
+<link rel="icon" href="favicon.png">
 
 <style>
 body {
-    margin: 0;
-    font-family: Inter, Arial;
-    background: #0b1a2b;
-    color: #e2e8f0;
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#020617;
+    color:#e2e8f0;
 }
 
-.hero {
-    background: url('banner.jpg') center/cover;
-    height: 420px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: rgba(0,0,0,0.55);
-    background-blend-mode: overlay;
-}
-
-.hero img { width: 120px; }
-
-.hero h1 { font-size: 38px; margin:10px 0; }
-
-.hero p { color: #cbd5f5; margin:5px 0; }
-
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
-
-.text {
-    background: rgba(255,255,255,0.05);
-    padding: 22px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    line-height:1.6;
-}
-
-.cta-btn {
-    display:block;
+/* NAVBAR */
+.navbar {
+    position:sticky;
+    top:0;
+    background:#020617;
+    padding:15px;
     text-align:center;
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    padding:20px;
-    border-radius:16px;
-    margin-top:20px;
-    color:white;
-    font-weight:600;
+}
+
+.navbar a {
+    margin:0 15px;
+    color:#cbd5f5;
     text-decoration:none;
 }
 
-.card {
-    background: rgba(255,255,255,0.04);
-    padding: 14px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* HERO */
+.hero {
+    position:relative;
+    text-align:center;
+    padding:120px 20px;
+    background:url('banner.jpg') center/cover no-repeat;
 }
 
-.left { display: flex; flex-direction: column; }
-
-.right { display: flex; gap: 10px; align-items: center; }
-
-.price { color: #4ade80; font-weight:bold; }
-
-input {
-    width: 70px;
-    padding:6px;
-    border-radius: 6px;
-    border: none;
+.hero::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.5);
 }
 
-.info {
-    margin-top: 20px;
-    color: #94a3b8;
-    font-size: 14px;
+.hero * {
+    position:relative;
+    z-index:2;
 }
 
-.floating-buttons {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.logo {
+    width:240px;
 }
 
-.floating-buttons a {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(255,255,255,0.08);
+/* BUTTON */
+.cta {
+    display:inline-block;
+    margin-top:20px;
+    padding:14px 28px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#d4af37,#facc15);
+    color:black;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+/* CONTAINER */
+.container {
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+/* GRID */
+.grid {
+    display:grid;
+    gap:15px;
+}
+
+/* WHY US */
+.why {
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+}
+
+.why .card {
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.05);
+    transition:0.3s;
+}
+
+.why .card:hover {
+    transform:translateY(-5px);
+    border:1px solid rgba(255,255,255,0.2);
+}
+
+.why h3 {
+    color:#ffffff; /* було золото */
+}
+
+/* PROCESS GAME STYLE */
+.process {
+    margin-top:40px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.step {
+    flex:1;
+    min-width:150px;
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    position:relative;
+    border:1px solid rgba(255,255,255,0.05);
+}
+
+.step::after {
+    content:"→";
+    position:absolute;
+    right:-10px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#64748b; /* було золото */
+    font-size:20px;
+}
+
+.step strong {
+    display:block;
+    font-size:20px;
+    color:#ffffff; /* було золото */
+    margin-bottom:10px;
+}
+
+/* GALLERY */
+.gallery {
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+}
+
+.gallery img {
+    width:100%;
+    border-radius:10px;
+}
+
+/* PRICE */
+.price-grid {
+    grid-template-columns: repeat(3,1fr);
+}
+
+.price-card {
+    background:rgba(255,255,255,0.05);
+    padding:15px;
+    border-radius:10px;
+    line-height:1.6;
+}
+
+/* FOOTER */
+.footer {
+    margin-top:60px;
+    padding:30px 20px;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,0.05);
+}
+
+.footer a {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:10px;
+    color:#d4af37;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+    .price-grid {
+        grid-template-columns:1fr;
+    }
+
+    .process {
+        flex-direction:column;
+    }
+
+    .step::after {
+        display:none;
+    }
 }
 </style>
+
 </head>
 
 <body>
 
+<div class="navbar">
+<a href="index.html">Domov</a>
+<a href="realizacie/index.html">Realizácie</a>
+<a href="dopyt/index.html">Cenová ponuka</a>
+<a href="kontakt/index.html">Kontakt</a>
+</div>
+
 <div class="hero">
-<img src="logo.jpg">
-<h1>SHPILKA</h1>
+<img src="logo.png" class="logo">
+
+<h1>Rekonštrukcie interiérov v Bratislave</h1>
 <p>Rýchla realizácia • Férové ceny • Profesionálny prístup</p>
+
+<a href="/dopyt" class="cta">Získať cenovú ponuku</a>
 </div>
 
 <div class="container">
 
-<div class="text">
-Realizujeme kompletné interiérové práce pre byty, domy a komerčné priestory v Bratislave a okolí.
+<h2>Prečo si vybrať nás?</h2>
+<div class="grid why">
+<div class="card">
+<h3>Férovosť</h3>
+<p>Žiadne skryté poplatky. Presne viete čo platíte.</p>
+</div>
 
-Zameriavame sa na kvalitu, precíznosť a spoľahlivosť. Každú zákazku riešime individuálne.
+<div class="card">
+<h3>Rýchlosť</h3>
+<p>Reagujeme rýchlo a nezaťahujeme práce zbytočne.</p>
+</div>
 
-Ponúkame bezplatnú obhliadku a nezáväznú cenovú ponuku.
+<div class="card">
+<h3>Kvalita</h3>
+<p>Robíme tak, aby ste nemuseli opravovať o rok.</p>
+</div>
 
-Kontaktujte nás a radi vám pomôžeme s vaším projektom.
+<div class="card">
+<h3>Komunikácia</h3>
+<p>Normálna dohoda, bez výhovoriek a chaosu.</p>
+</div>
 
+<div class="card">
+<h3>Skúsenosti</h3>
+<p>Rôzne typy projektov od bytov po komerčné priestory.</p>
+</div>
 
-<a href="/dopyt" class="cta-btn"> Online cenová ponuka</a>
+<div class="card">
+<h3>Pomoc s riešením</h3>
+<p>Poradíme lepšie riešenia, nie len vykonáme prácu.</p>
+</div>
+</div>
+
+<h2>Ako prebieha spolupráca</h2>
+<div class="process">
+
+<div class="step">
+<strong>1</strong>
+Kontakt
+</div>
+
+<div class="step">
+<strong>2</strong>
+Obhliadka
+</div>
+
+<div class="step">
+<strong>3</strong>
+Cenová ponuka
+</div>
+
+<div class="step">
+<strong>4</strong>
+Dohoda
+</div>
+
+<div class="step">
+<strong>5</strong>
+Realizácia
+</div>
+
+<div class="step">
+<strong>6</strong>
+Odovzdanie
+</div>
+
+</div>
+
+<h2>Naše realizácie</h2>
+<div class="grid gallery">
+<img src="img1.jpg">
+<img src="img2.jpg">
+<img src="img3.jpg">
+<img src="img4.jpg">
+<img src="img5.jpg">
+<img src="img6.jpg">
 </div>
 
 <h2>Cenník prác</h2>
+<div class="grid price-grid">
 
-<!-- ВСІ ТВОЇ РОБОТИ -->
-<div class="card"><div class="left">SDK stena<span class="price">24 €/m²</span></div><div class="right"><input oninput="calc(this,24)"><span>0 €</span></div></div>
-<div class="card"><div class="left">SDK strop<span class="price">19 €/m²</span></div><div class="right"><input oninput="calc(this,19)"><span>0 €</span></div></div>
-<div class="card"><div class="left">SDK predstena<span class="price">16 €/m²</span></div><div class="right"><input oninput="calc(this,16)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Omietka štuk<span class="price">7 €/m²</span></div><div class="right"><input oninput="calc(this,7)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Stierka 1x<span class="price">6 €/m²</span></div><div class="right"><input oninput="calc(this,6)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Stierka 2x<span class="price">10 €/m²</span></div><div class="right"><input oninput="calc(this,10)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Brúsenie<span class="price">4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Penetrácia<span class="price">1 €/m²</span></div><div class="right"><input oninput="calc(this,1)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Maľovanie 1x<span class="price">2 €/m²</span></div><div class="right"><input oninput="calc(this,2)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Maľovanie 2x<span class="price">4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Kazetový strop<span class="price">18 €/m²</span></div><div class="right"><input oninput="calc(this,18)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Napínaný strop<span class="price">30 €/m²</span></div><div class="right"><input oninput="calc(this,30)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Nivelácia<span class="price">4 €/m²</span></div><div class="right"><input oninput="calc(this,4)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Laminát<span class="price">10 €/m²</span></div><div class="right"><input oninput="calc(this,10)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Vinyl<span class="price">12 €/m²</span></div><div class="right"><input oninput="calc(this,12)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Dlažba<span class="price">25 €/m²</span></div><div class="right"><input oninput="calc(this,25)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Veľkoformát<span class="price">40 €/m²</span></div><div class="right"><input oninput="calc(this,40)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Obklad kúpeľňa<span class="price">30 €/m²</span></div><div class="right"><input oninput="calc(this,30)"><span>0 €</span></div></div>
-
-<div class="card"><div class="left">Montáž dverí<span class="price">70 €</span></div><div class="right"><input oninput="calc(this,70)"><span>0 €</span></div></div>
-<div class="card"><div class="left">Montáž okien<span class="price">100 €</span></div><div class="right"><input oninput="calc(this,100)"><span>0 €</span></div></div>
-
-<div class="info">
-*Ceny sú orientačné a závisia od náročnosti práce.<br><br>
-Realizujeme aj ďalšie práce, ktoré nie sú uvedené v tomto cenníku.
+<div class="price-card">
+<strong>Sadrokartón</strong><br>
+SDK stena – od 24 €/m²<br>
+SDK strop – od 19 €/m²<br>
+SDK predstena – od 16 €/m²
 </div>
 
-<a href="/dopyt" class="cta-btn"> Zistiť cenu projektu</a>
+<div class="price-card">
+<strong>Omietky a stierky</strong><br>
+Omietka štuk – od 7 €/m²<br>
+Stierka 1x – od 6 €/m²<br>
+Stierka 2x – od 10 €/m²<br>
+Brúsenie – od 4 €/m²
+</div>
+
+<div class="price-card">
+<strong>Maľovanie</strong><br>
+Penetrácia – od 1 €/m²<br>
+Maľovanie 1x – od 2 €/m²<br>
+Maľovanie 2x – od 4 €/m²
+</div>
+
+<div class="price-card">
+<strong>Podlahy</strong><br>
+Nivelácia – od 4 €/m²<br>
+Laminát – od 10 €/m²<br>
+Vinyl – od 12 €/m²
+</div>
+
+<div class="price-card">
+<strong>Obklady a dlažby</strong><br>
+Dlažba – od 25 €/m²<br>
+Veľkoformát – od 40 €/m²<br>
+Obklad kúpeľňa – od 30 €/m²
+</div>
+
+<div class="price-card">
+<strong>Ostatné</strong><br>
+Montáž dverí – od 70 €<br>
+Montáž okien – od 100 €
+</div>
 
 </div>
 
-<div class="floating-buttons">
-<a href="tel:+421951729585">📞</a>
-<a href="https://wa.me/421951729585">💬</a>
 </div>
 
-<script>
-function calc(input, price){
-    let val = input.value;
-    input.nextElementSibling.innerText = val ? val*price + " €" : "0 €";
-}
-</script>
+<div class="footer">
+
+<h3>Kontakt</h3>
+
+<a href="tel:+421951729585">📞 +421 951 729 585</a>
+<br>
+
+<a href="https://wa.me/421951729585" target="_blank">WhatsApp</a>
+<a href="https://www.facebook.com/profile.php?id=61573303380805" target="_blank">Facebook</a>
+<a href="https://www.instagram.com/shpilka.sk/" target="_blank">Instagram</a>
+<a href="https://www.tiktok.com/@shpilka.s.r.o" target="_blank">TikTok</a>
+
+</div>
 
 </body>
 </html>
