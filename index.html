@@ -103,7 +103,7 @@ html {
 }
 
 .why h3 {
-    color:#ffffff; /* було золото */
+    color:#ffffff;
 }
 
 /* PROCESS GAME STYLE */
@@ -131,14 +131,14 @@ html {
     right:-10px;
     top:50%;
     transform:translateY(-50%);
-    color:#64748b; /* було золото */
+    color:#64748b;
     font-size:20px;
 }
 
 .step strong {
     display:block;
     font-size:20px;
-    color:#ffffff; /* було золото */
+    color:#ffffff;
     margin-bottom:10px;
 }
 
@@ -182,19 +182,106 @@ html {
     font-weight:bold;
 }
 
-/* MOBILE */
+/* ===== MOBILE FIX ONLY ===== */
 @media(max-width:700px){
-    .price-grid {
-        grid-template-columns:1fr;
+
+    .navbar {
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:8px;
     }
 
+    .navbar a {
+        margin:5px;
+        font-size:13px;
+    }
+
+    .hero {
+        padding:70px 15px;
+    }
+
+    .logo {
+        width:170px;
+    }
+
+    h1 {
+        font-size:24px;
+    }
+
+    .cta {
+        width:100%;
+        text-align:center;
+    }
+
+    .container {
+        padding:12px;
+    }
+
+    .grid {
+        gap:10px;
+    }
+
+    /* WHY → 2 columns */
+    .why {
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .why .card {
+        padding:12px;
+        font-size:13px;
+    }
+
+    .why h3 {
+        font-size:14px;
+    }
+
+    /* PROCESS → 2 columns */
     .process {
-        flex-direction:column;
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+    }
+
+    .step {
+        padding:12px;
+        font-size:13px;
+    }
+
+    .step strong {
+        font-size:16px;
     }
 
     .step::after {
         display:none;
     }
+
+    /* GALLERY */
+    .gallery {
+        grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    }
+
+    /* PRICE */
+    .price-grid {
+        grid-template-columns:1fr;
+    }
+
+    .price-card {
+        padding:12px;
+        font-size:14px;
+    }
+
+    /* FOOTER */
+    .footer a {
+        display:block;
+        margin:8px 0;
+    }
+
+}
+
+/* FIX SCROLL */
+#kontakt {
+    scroll-margin-top:80px;
 }
 </style>
 
@@ -352,6 +439,7 @@ Montáž okien – od 100 €
 <h3>Kontakt</h3>
 
 <a href="tel:+421951729585">📞 +421 951 729 585</a>
+
 <br>
 
 <a href="https://wa.me/421951729585" target="_blank">WhatsApp</a>
