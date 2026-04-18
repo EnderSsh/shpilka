@@ -9,6 +9,17 @@
 <link rel="icon" href="favicon.png">
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+}
+
 body {
     margin:0;
     font-family: Arial, sans-serif;
@@ -18,7 +29,7 @@ body {
 
 html {
     scroll-behavior: smooth;
-}        
+}
 
 /* NAVBAR */
 .navbar {
@@ -41,6 +52,9 @@ html {
     text-align:center;
     padding:120px 20px;
     background:url('banner.jpg') center/cover no-repeat;
+
+    width:100%;
+    margin:0;
 }
 
 .hero::before {
@@ -106,7 +120,7 @@ html {
     color:#ffffff;
 }
 
-/* PROCESS GAME STYLE */
+/* PROCESS */
 .process {
     margin-top:40px;
     display:flex;
@@ -182,7 +196,7 @@ html {
     font-weight:bold;
 }
 
-/* ===== MOBILE FIX ONLY ===== */
+/* ===== MOBILE (ЄДИНИЙ ЧИСТИЙ БЛОК) ===== */
 @media(max-width:700px){
 
     .navbar {
@@ -207,6 +221,11 @@ html {
 
     h1 {
         font-size:24px;
+        text-align:center;
+    }
+
+    p {
+        text-align:center;
     }
 
     .cta {
@@ -222,21 +241,12 @@ html {
         gap:10px;
     }
 
-    /* WHY → 2 columns */
+    /* WHY */
     .why {
         grid-template-columns:repeat(2,1fr);
     }
 
-    .why .card {
-        padding:12px;
-        font-size:13px;
-    }
-
-    .why h3 {
-        font-size:14px;
-    }
-
-    /* PROCESS → 2 columns */
+    /* PROCESS */
     .process {
         display:grid;
         grid-template-columns:repeat(2,1fr);
@@ -276,7 +286,6 @@ html {
         display:block;
         margin:8px 0;
     }
-
 }
 
 /* FIX SCROLL */
@@ -336,42 +345,19 @@ html {
 
 <div class="card">
 <h3>Pomoc s riešením</h3>
-<p>Poradíme lepšie riešenia, nie len vykonáme prácu.</p>
+<p>Poradíme lepšie riešenia, nie len vykonáme prácу.</p>
 </div>
 </div>
 
 <h2>Ako prebieha spolupráca</h2>
 <div class="process">
 
-<div class="step">
-<strong>1</strong>
-Kontakt
-</div>
-
-<div class="step">
-<strong>2</strong>
-Obhliadka
-</div>
-
-<div class="step">
-<strong>3</strong>
-Cenová ponuka
-</div>
-
-<div class="step">
-<strong>4</strong>
-Dohoda
-</div>
-
-<div class="step">
-<strong>5</strong>
-Realizácia
-</div>
-
-<div class="step">
-<strong>6</strong>
-Odovzdanie
-</div>
+<div class="step"><strong>1</strong>Kontakt</div>
+<div class="step"><strong>2</strong>Obhliadka</div>
+<div class="step"><strong>3</strong>Cenová ponука</div>
+<div class="step"><strong>4</strong>Dohода</div>
+<div class="step"><strong>5</strong>Realizácia</div>
+<div class="step"><strong>6</strong>Odovzdanie</div>
 
 </div>
 
@@ -397,7 +383,7 @@ SDK predstena – od 16 €/m²
 
 <div class="price-card">
 <strong>Omietky a stierky</strong><br>
-Omietka štuk – od 7 €/m²<br>
+Omietка štuk – od 7 €/m²<br>
 Stierka 1x – od 6 €/m²<br>
 Stierka 2x – od 10 €/m²<br>
 Brúsenie – od 4 €/m²
