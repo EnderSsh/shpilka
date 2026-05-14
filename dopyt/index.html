@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHPILKA – Rekonštrukcie interiérov Bratislava</title>
-<meta name="description" content="Rekonštrukcie bytov a interiérov v Bratislave na kľúč. Férové ceny, rýchla realizácia, bez skrytých poplatkov. Zavolajte dnes!">
-<meta name="keywords" content="rekonštrukcia bytu Bratislava, rekonštrukcie interiérov, maliar Bratislava, obkladač Bratislava, podlahy Bratislava, stavebné práce Bratislava">
-<meta property="og:title" content="SHPILKA – Rekonštrukcie interiérov Bratislava">
-<meta property="og:description" content="Rekonštrukcie bytov na kľúč v Bratislave. Férové ceny, žiadne skryté poplatky.">
-<meta property="og:url" content="https://shpilka.sk">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://shpilka.sk/">
+<title>Cenová ponuka – SHPILKA Bratislava</title>
+<meta name="description" content="Získajte bezplatnú cenovú ponuku na rekonštrukciu bytu alebo interiéru v Bratislave. Odpovieme do 24 hodín.">
 <link rel="icon" href="favicon.png">
+
+<!-- Uploadcare -->
+<script>
+UPLOADCARE_PUBLIC_KEY = '78744bcd2979b7b29ecc';
+UPLOADCARE_MULTIPLE = true;
+</script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
 <style>
 * {
     box-sizing: border-box;
@@ -21,14 +23,13 @@
 
 html {
     scroll-behavior: smooth;
-    font-size: 16px;
 }
 
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
     background: #020617;
     color: #e2e8f0;
-    overflow-x: hidden;
+    min-height: 100vh;
 }
 
 a {
@@ -62,447 +63,329 @@ a {
     color: #facc15;
 }
 
-/* HERO */
-.hero {
-    position: relative;
+/* HERO MINI */
+.hero-mini {
     text-align: center;
-    padding: 100px 20px 80px;
-    background: url('banner.jpg') center/cover no-repeat;
-    overflow: hidden;
+    padding: 50px 20px 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(2,6,23,0.6), rgba(2,6,23,0.85));
-}
-
-.hero * {
-    position: relative;
-    z-index: 2;
-}
-
-.logo {
-    width: 200px;
-    margin-bottom: 24px;
-}
-
-.hero h1 {
-    font-size: clamp(28px, 5vw, 48px);
+.hero-mini h1 {
+    font-size: clamp(24px, 4vw, 36px);
     font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 12px;
     color: #fff;
+    margin-bottom: 10px;
 }
 
-.hero h1 span {
+.hero-mini h1 span {
     color: #facc15;
 }
 
-.hero p {
-    font-size: 18px;
-    color: #94a3b8;
-    margin-bottom: 32px;
+.hero-mini p {
+    color: #64748b;
+    font-size: 15px;
 }
 
-.hero-btns {
+/* TRUST BADGES */
+.badges {
     display: flex;
-    gap: 12px;
     justify-content: center;
+    gap: 24px;
     flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-.btn-primary {
-    display: inline-block;
-    padding: 14px 28px;
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.badge-icon {
+    font-size: 18px;
+}
+
+/* MAIN LAYOUT */
+.main {
+    max-width: 680px;
+    margin: 40px auto;
+    padding: 0 20px 60px;
+}
+
+/* BACK */
+.back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 24px;
+    transition: color .2s;
+}
+
+.back:hover {
+    color: #e2e8f0;
+}
+
+/* FORM CARD */
+.form-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 36px;
+}
+
+/* SECTION DIVIDER */
+.form-section {
+    margin-bottom: 28px;
+}
+
+.form-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #facc15;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+/* FORM FIELDS */
+.field {
+    margin-bottom: 16px;
+}
+
+.field label {
+    display: block;
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
+    color: #e2e8f0;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color .2s, background .2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    border-color: rgba(250, 204, 21, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.field select option {
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+/* TWO COLUMNS */
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* HINT */
+.hint {
+    font-size: 12px;
+    color: #475569;
+    margin-top: 6px;
+    line-height: 1.5;
+}
+
+/* UPLOAD AREA */
+.upload-wrapper {
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    background: rgba(255,255,255,0.02);
+}
+
+.upload-wrapper p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+/* SUBMIT BTN */
+.submit-btn {
+    width: 100%;
+    padding: 16px;
     background: linear-gradient(135deg, #d4af37, #facc15);
+    border: none;
+    border-radius: 12px;
+    color: #020617;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s, transform .1s;
+    margin-top: 8px;
+    font-family: inherit;
+}
+
+.submit-btn:hover {
+    opacity: .9;
+}
+
+.submit-btn:active {
+    transform: scale(0.99);
+}
+
+/* CONTACT ALTERNATIVE */
+.alt-contact {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.alt-contact a {
+    color: #facc15;
+    font-weight: 600;
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.popup-box {
+    position: relative;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 32px;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.popup-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+}
+
+.popup-box h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.popup-box p {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(255,255,255,0.07);
+    border: none;
+    color: #94a3b8;
+    font-size: 16px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+}
+
+.call-btn {
+    display: block;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #d4af37, #facc15);
+    padding: 14px;
+    border-radius: 10px;
     color: #020617;
     font-weight: 700;
     font-size: 15px;
     transition: opacity .2s;
 }
 
-.btn-primary:hover {
-    opacity: .85;
+.call-btn:hover {
+    opacity: .88;
 }
 
-.btn-secondary {
-    display: inline-block;
-    padding: 14px 28px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #e2e8f0;
-    font-size: 15px;
-    transition: background .2s;
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.07);
-}
-
-/* STATS */
-.stats {
-    background: rgba(255, 255, 255, 0.03);
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 32px 20px;
-}
-
-.stats-grid {
-    max-width: 900px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    text-align: center;
-}
-
-.stat-num {
-    font-size: 32px;
-    font-weight: 700;
-    color: #facc15;
-}
-
-.stat-label {
+.popup-note {
+    margin-top: 14px;
     font-size: 13px;
-    color: #64748b;
-    margin-top: 4px;
-}
-
-/* SECTIONS */
-.section {
-    max-width: 1100px;
-    margin: auto;
-    padding: 60px 20px;
-}
-
-.section h2 {
-    font-size: clamp(22px, 4vw, 32px);
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 8px;
-}
-
-.section-sub {
-    color: #64748b;
-    margin-bottom: 36px;
-    font-size: 15px;
-}
-
-/* WHY */
-.why-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-}
-
-.card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 14px;
-    padding: 24px;
-    transition: .3s;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(250, 204, 21, 0.3);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.card-icon {
-    font-size: 28px;
-    margin-bottom: 14px;
-}
-
-.card h3 {
-    font-size: 17px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 8px;
-}
-
-.card p {
-    font-size: 14px;
-    color: #94a3b8;
-    line-height: 1.6;
-}
-
-/* PROCESS */
-.process {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.step {
-    flex: 1;
-    min-width: 130px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    padding: 20px 16px;
-    text-align: center;
-    position: relative;
-}
-
-.step-num {
-    display: block;
-    font-size: 24px;
-    font-weight: 700;
-    color: #facc15;
-    margin-bottom: 6px;
-}
-
-.step p {
-    font-size: 13px;
-    color: #94a3b8;
-}
-
-.step::after {
-    content: '→';
-    position: absolute;
-    right: -10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #334155;
-    font-size: 18px;
-}
-
-.step:last-child::after {
-    display: none;
-}
-
-/* GALLERY */
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-}
-
-.gallery-item {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    aspect-ratio: 4/3;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .3s;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.05);
-}
-
-.gallery-item .caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(2,6,23,0.9), transparent);
-    padding: 16px 12px 10px;
-    font-size: 13px;
-    color: #e2e8f0;
-}
-
-/* PRICE */
-.price-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-}
-
-.price-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    padding: 20px;
-}
-
-.price-card strong {
-    display: block;
-    font-size: 15px;
-    color: #fff;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.price-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: #94a3b8;
-    padding: 4px 0;
-}
-
-.price-row span {
-    color: #e2e8f0;
-    font-weight: 500;
-}
-
-/* REVIEWS */
-.reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-}
-
-.review-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 14px;
-    padding: 24px;
-}
-
-.stars {
-    color: #facc15;
-    font-size: 16px;
-    margin-bottom: 12px;
-}
-
-.review-text {
-    font-size: 14px;
-    color: #94a3b8;
-    line-height: 1.7;
-    margin-bottom: 16px;
-    font-style: italic;
-}
-
-.reviewer {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.reviewer-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #d4af37, #facc15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-    color: #020617;
-    flex-shrink: 0;
-}
-
-.reviewer-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #e2e8f0;
-}
-
-.reviewer-date {
-    font-size: 12px;
     color: #475569;
-}
-
-/* CTA */
-.cta-section {
-    background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(250,204,21,0.05));
-    border: 1px solid rgba(250, 204, 21, 0.15);
-    border-radius: 20px;
-    padding: 60px 40px;
-    text-align: center;
-    margin: 0 20px 60px;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 60px;
-}
-
-.cta-section h2 {
-    font-size: clamp(24px, 4vw, 36px);
-    color: #fff;
-    margin-bottom: 12px;
-}
-
-.cta-section p {
-    color: #94a3b8;
-    margin-bottom: 32px;
-    font-size: 16px;
 }
 
 /* FOOTER */
 .footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 40px 20px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 24px 20px;
     text-align: center;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 20px;
-}
-
-.footer-links a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #d4af37;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 20px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-radius: 10px;
-    transition: background .2s;
-}
-
-.footer-links a:hover {
-    background: rgba(212, 175, 55, 0.1);
-}
-
-.footer-phone {
-    font-size: 28px;
-    font-weight: 700;
-    color: #fff;
-    display: block;
-    margin-bottom: 8px;
-    transition: color .2s;
-}
-
-.footer-phone:hover {
-    color: #facc15;
+    font-size: 13px;
+    color: #334155;
 }
 
 /* MOBILE */
-@media (max-width: 700px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 560px) {
+    .form-card {
+        padding: 24px 18px;
     }
 
-    .price-grid {
+    .field-row {
         grid-template-columns: 1fr;
     }
 
-    .process {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+    .badges {
+        gap: 14px;
     }
-
-    .step::after {
-        display: none;
-    }
-
-    .cta-section {
-        padding: 40px 20px;
-    }
-}
-
-#kontakt {
-    scroll-margin-top: 80px;
 }
 </style>
 </head>
@@ -512,233 +395,143 @@ a {
     <a href="/">Domov</a>
     <a href="/realizacie">Realizácie</a>
     <a href="/dopyt">Cenová ponuka</a>
-    <a href="#kontakt">Kontakt</a>
+    <a href="/#kontakt">Kontakt</a>
 </nav>
 
-<div class="hero">
-    <img src="logo.png" class="logo" alt="SHPILKA logo">
-    <h1>Rekonštrukcia bytu<br><span>na kľúč v Bratislave</span></h1>
-    <p>Odovzdáme hotové. Bez skrytých poplatkov. Bez výhovoriek.</p>
-    <div class="hero-btns">
-        <a href="/dopyt" class="btn-primary">Získať cenovú ponuku</a>
-        <a href="tel:+421951729585" class="btn-secondary">📞 Zavolať teraz</a>
+<div class="hero-mini">
+    <h1>Bezplatná <span>cenová ponuka</span></h1>
+    <p>Vyplňte formulár – odpovieme do 24 hodín</p>
+    <div class="badges">
+        <div class="badge"><span class="badge-icon">✅</span> Obhliadka zadarmo</div>
+        <div class="badge"><span class="badge-icon">⚡</span> Odpoveď do 24 hodín</div>
+        <div class="badge"><span class="badge-icon">💰</span> Žiadne skryté poplatky</div>
     </div>
 </div>
 
-<!-- STATS -->
-<div class="stats">
-    <div class="stats-grid">
-        <div>
-            <div class="stat-num">50+</div>
-            <div class="stat-label">Dokončených projektov</div>
-        </div>
-        <div>
-            <div class="stat-num">5+</div>
-            <div class="stat-label">Rokov skúseností</div>
-        </div>
-        <div>
-            <div class="stat-num">100%</div>
-            <div class="stat-label">Spokojných klientov</div>
-        </div>
-        <div>
-            <div class="stat-num">2 roky</div>
-            <div class="stat-label">Záruka na práce</div>
-        </div>
-    </div>
-</div>
+<div class="main">
 
-<!-- WHY US -->
-<div class="section">
-    <h2>Prečo si vybrať SHPILKA?</h2>
-    <p class="section-sub">Nie sme len ďalšia stavebná firma. Tu je rozdiel.</p>
-    <div class="why-grid">
-        <div class="card">
-            <div class="card-icon">💰</div>
-            <h3>Žiadne skryté poplatky</h3>
-            <p>Cenu dohodneme vopred. Čo odsúhlasíme, to zaplatíte – ani euro navyše.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">⚡</div>
-            <h3>Rýchla realizácia</h3>
-            <p>Reagujeme do 24 hodín. Práce nezaťahujeme zbytočne – váš čas má hodnotu.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">🏆</div>
-            <h3>Kvalita s garanciou</h3>
-            <p>Na všetky práce dávame 2-ročnú záruku. Robíme tak, aby ste nevolali o rok.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">📱</div>
-            <h3>Normálna komunikácia</h3>
-            <p>Dostupní na telefóne aj WhatsApp. Bez výhovoriek, bez chaosu, bez stresu.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">🔧</div>
-            <h3>Komplexná realizácia</h3>
-            <p>Od bytov po komerčné priestory. Nemusíte zháňať viacero firiem – zvládneme všetko.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">💡</div>
-            <h3>Poradíme lepšie riešenia</h3>
-            <p>Nie len vykonáme pokyny – navrhneme ako ušetriť čas, peniaze a predísť problémom.</p>
-        </div>
-    </div>
-</div>
+    <a href="javascript:history.back()" class="back">← Späť</a>
 
-<!-- PROCESS -->
-<div class="section" style="padding-top: 0">
-    <h2>Ako prebieha spolupráca</h2>
-    <p class="section-sub">Od prvého kontaktu po odovzdanie kľúčov</p>
-    <div class="process">
-        <div class="step"><span class="step-num">1</span><p>Kontakt</p></div>
-        <div class="step"><span class="step-num">2</span><p>Obhliadka</p></div>
-        <div class="step"><span class="step-num">3</span><p>Cenová ponuka</p></div>
-        <div class="step"><span class="step-num">4</span><p>Dohoda</p></div>
-        <div class="step"><span class="step-num">5</span><p>Realizácia</p></div>
-        <div class="step"><span class="step-num">6</span><p>Odovzdanie</p></div>
-    </div>
-</div>
+    <div class="form-card">
+        <form id="mainForm"
+              action="https://formspree.io/f/mkokgrrq"
+              method="POST"
+              target="hidden_iframe">
 
-<!-- GALLERY -->
-<div class="section" style="padding-top: 0">
-    <h2>Naše realizácie</h2>
-    <p class="section-sub">Skutočné projekty, reálne výsledky</p>
-    <div class="gallery">
-        <div class="gallery-item">
-            <img src="img1.jpg" alt="Rekonštrukcia kúpeľne Bratislava">
-            <div class="caption">Kúpeľňa – kompletná rekonštrukcia</div>
-        </div>
-        <div class="gallery-item">
-            <img src="img2.jpg" alt="Pokládka podlahy Bratislava">
-            <div class="caption">Pokládka vinylových podláh</div>
-        </div>
-        <div class="gallery-item">
-            <img src="img3.jpg" alt="Maľovanie interiéru Bratislava">
-            <div class="caption">Maľovanie a stierkovanie</div>
-        </div>
-        <div class="gallery-item">
-            <img src="img4.jpg" alt="Sadrokartón Bratislava">
-            <div class="caption">Sadrokartónové stropy a steny</div>
-        </div>
-        <div class="gallery-item">
-            <img src="img5.jpg" alt="Obklady a dlažby Bratislava">
-            <div class="caption">Obklady a dlažby</div>
-        </div>
-        <div class="gallery-item">
-            <img src="img6.jpg" alt="Rekonštrukcia bytu Bratislava">
-            <div class="caption">Kompletná rekonštrukcia bytu</div>
-        </div>
-    </div>
-</div>
-
-<!-- REVIEWS -->
-<div class="section" style="padding-top: 0">
-    <h2>Čo hovoria naši klienti</h2>
-    <p class="section-sub">Skutočné recenzie od skutočných zákazníkov</p>
-    <div class="reviews-grid">
-        <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">„Kompletnú rekonštrukciu kúpeľne zvládli za 10 dní. Cena zodpovedala dohode, žiadne prekvapenia. Určite odporúčam!"</p>
-            <div class="reviewer">
-                <div class="reviewer-avatar">MK</div>
-                <div>
-                    <div class="reviewer-name">Martin K.</div>
-                    <div class="reviewer-date">Bratislava – Petržalka</div>
+            <!-- KONTAKT -->
+            <div class="form-section">
+                <div class="form-section-title">Vaše kontaktné údaje</div>
+                <div class="field">
+                    <label>Meno a priezvisko *</label>
+                    <input type="text" name="name" placeholder="Ján Novák" required>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Telefón *</label>
+                        <input type="tel" name="phone" placeholder="+421 9xx xxx xxx" required>
+                    </div>
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="vas@email.sk">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">„Výborne odvedená práca, rýchlo, čisto a bez problémov. Komunikácia na výbornej úrovni počas celého projektu."</p>
-            <div class="reviewer">
-                <div class="reviewer-avatar">LH</div>
-                <div>
-                    <div class="reviewer-name">Lucia H.</div>
-                    <div class="reviewer-date">Bratislava – Ružinov</div>
+
+            <!-- PROJEKT -->
+            <div class="form-section">
+                <div class="form-section-title">O projekte</div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Typ projektu</label>
+                        <select name="type">
+                            <option>Byt</option>
+                            <option>Dom</option>
+                            <option>Komerčný priestor</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Rozloha (m²)</label>
+                        <input type="number" name="area" placeholder="napr. 65">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Aproximátny začiatok</label>
+                        <select name="start">
+                            <option>Čo najskôr</option>
+                            <option>Do 1 týždňa</option>
+                            <option>Do 2 týždňov</option>
+                            <option>Do 1 mesiaca</option>
+                            <option>1–3 mesiace</option>
+                            <option>Neskôr</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Materiál</label>
+                        <select name="material">
+                            <option>Zabezpečím sám</option>
+                            <option>Potrebujem zabezpečiť</option>
+                            <option>Dohodou</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Popis prác</label>
+                    <textarea name="message" placeholder="Popíšte čo potrebujete – napr. kompletná rekonštrukcia kúpeľne, stierky, pokládka podlahy, SDK priečka..."></textarea>
+                    <div class="hint">Čím viac detailov, tým presnejšia bude naša ponuka.</div>
                 </div>
             </div>
-        </div>
-        <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">„Poradili mi lepšie riešenie ako som pôvodne plánoval – ušetril som čas aj peniaze. Profesionálny prístup od začiatku do konca."</p>
-            <div class="reviewer">
-                <div class="reviewer-avatar">PV</div>
-                <div>
-                    <div class="reviewer-name">Peter V.</div>
-                    <div class="reviewer-date">Bratislava – Staré Mesto</div>
+
+            <!-- SÚBORY -->
+            <div class="form-section">
+                <div class="form-section-title">Foto / Video (voliteľné)</div>
+                <div class="upload-wrapper">
+                    <p>Nahrajte fotky alebo video priestoru – pomôže nám to pripraviť presnejšiu ponuku</p>
+                    <input type="hidden" role="uploadcare-uploader" name="files" />
                 </div>
+                <div class="hint" style="margin-top: 10px">Podporované formáty: JPG, PNG, MP4, PDF. Môžete nahrať viac súborov naraz.</div>
             </div>
+
+            <button type="submit" class="submit-btn">📩 Odoslať dopyt zadarmo</button>
+
+        </form>
+
+        <div class="alt-contact">
+            Radšej zavoláte? <a href="tel:+421951729585">+421 951 729 585</a>
         </div>
     </div>
 </div>
 
-<!-- PRICE -->
-<div class="section" style="padding-top: 0">
-    <h2>Cenník prác</h2>
-    <p class="section-sub">Orientačné ceny bez DPH. Presná ponuka po obhliadke zadarmo.</p>
-    <div class="price-grid">
-        <div class="price-card">
-            <strong>Sadrokartón</strong>
-            <div class="price-row">SDK stena <span>od 24 €/m²</span></div>
-            <div class="price-row">SDK strop <span>od 19 €/m²</span></div>
-            <div class="price-row">SDK predstena <span>od 16 €/m²</span></div>
-        </div>
-        <div class="price-card">
-            <strong>Omietky a stierky</strong>
-            <div class="price-row">Omietka štuk <span>od 7 €/m²</span></div>
-            <div class="price-row">Stierka 1× <span>od 6 €/m²</span></div>
-            <div class="price-row">Stierka 2× <span>od 10 €/m²</span></div>
-            <div class="price-row">Brúsenie <span>od 4 €/m²</span></div>
-        </div>
-        <div class="price-card">
-            <strong>Maľovanie</strong>
-            <div class="price-row">Penetrácia <span>od 1 €/m²</span></div>
-            <div class="price-row">Maľovanie 1× <span>od 2 €/m²</span></div>
-            <div class="price-row">Maľovanie 2× <span>od 4 €/m²</span></div>
-        </div>
-        <div class="price-card">
-            <strong>Podlahy</strong>
-            <div class="price-row">Nivelácia <span>od 4 €/m²</span></div>
-            <div class="price-row">Laminát <span>od 10 €/m²</span></div>
-            <div class="price-row">Vinyl <span>od 12 €/m²</span></div>
-        </div>
-        <div class="price-card">
-            <strong>Obklady a dlažby</strong>
-            <div class="price-row">Dlažba <span>od 25 €/m²</span></div>
-            <div class="price-row">Veľkoformát <span>od 40 €/m²</span></div>
-            <div class="price-row">Obklad kúpeľňa <span>od 30 €/m²</span></div>
-        </div>
-        <div class="price-card">
-            <strong>Ostatné</strong>
-            <div class="price-row">Montáž dverí <span>od 70 €</span></div>
-            <div class="price-row">Montáž okien <span>od 100 €</span></div>
-        </div>
+<!-- POPUP -->
+<div id="popup" class="popup">
+    <div class="popup-box">
+        <button class="close-btn" onclick="closePopup()">✕</button>
+        <div class="popup-icon">👍</div>
+        <h3>Ďakujeme!</h3>
+        <p>Vaša žiadosť bola úspešne odoslaná. Ozveme sa vám čo najskôr s cenovou ponukou.</p>
+        <a href="tel:+421951729585" class="call-btn">📞 Zavolať teraz</a>
+        <p class="popup-note">Ak je to súrne, neváhajte zavolať priamo.</p>
     </div>
 </div>
 
-<!-- CTA -->
-<div class="cta-section">
-    <h2>Pripravení začať váš projekt?</h2>
-    <p>Obhliadka a cenová ponuka sú zadarmo. Odpovieme do 24 hodín.</p>
-    <div class="hero-btns">
-        <a href="/dopyt" class="btn-primary">Získať bezplatnú ponuku</a>
-        <a href="tel:+421951729585" class="btn-secondary">📞 +421 951 729 585</a>
-    </div>
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
+<div class="footer">
+    © 2025 SHPILKA s.r.o. – Rekonštrukcie interiérov Bratislava
 </div>
 
-<!-- FOOTER -->
-<div class="footer" id="kontakt">
-    <h3 style="color: #fff; margin-bottom: 6px">Kontaktujte nás</h3>
-    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px">Dostupní každý deň</p>
-    <a href="tel:+421951729585" class="footer-phone">+421 951 729 585</a>
-    <div class="footer-links">
-        <a href="https://wa.me/421951729585" target="_blank">💬 WhatsApp</a>
-        <a href="https://www.facebook.com/profile.php?id=61573303380805" target="_blank">📘 Facebook</a>
-        <a href="https://www.instagram.com/shpilka.sk/" target="_blank">📸 Instagram</a>
-        <a href="https://www.tiktok.com/@shpilka.s.r.o" target="_blank">🎵 TikTok</a>
-    </div>
-    <p style="color: #334155; font-size: 13px; margin-top: 30px">© 2025 SHPILKA s.r.o. – Rekonštrukcie interiérov Bratislava</p>
-</div>
+<script>
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+document.getElementById("mainForm").addEventListener("submit", function() {
+    setTimeout(() => {
+        document.getElementById("popup").style.display = "flex";
+        document.getElementById("mainForm").reset();
+    }, 800);
+});
+</script>
 
 </body>
 </html>
