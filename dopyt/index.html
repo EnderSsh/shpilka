@@ -400,7 +400,7 @@ a {
 
 <div class="hero-mini">
     <h1>Bezplatná <span>cenová ponuka</span></h1>
-    <p>Vyplňte formulár – odpovieme do 24 hodín</p>
+    <p>Interiérové práce v Bratislave a okolí – odpovieme do 24 hodín</p>
     <div class="badges">
         <div class="badge"><span class="badge-icon">✅</span> Obhliadka zadarmo</div>
         <div class="badge"><span class="badge-icon">⚡</span> Odpoveď do 24 hodín</div>
@@ -522,7 +522,7 @@ a {
 
 <script>
 function closePopup() {
-    document.getElementById("popup").style.display = "none";
+    window.location.href = "/";
 }
 
 document.getElementById("mainForm").addEventListener("submit", function() {
@@ -530,6 +530,9 @@ document.getElementById("mainForm").addEventListener("submit", function() {
         document.getElementById("popup").style.display = "flex";
         document.getElementById("mainForm").reset();
     }, 800);
+    setTimeout(() => {
+        window.location.href = "/";
+    }, 4000);
 });
 </script>
 
