@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cenová ponuka – SHPILKA Bratislava</title>
 <meta name="description" content="Získajte bezplatnú cenovú ponuku na rekonštrukciu bytu alebo interiéru v Bratislave. Odpovieme do 24 hodín.">
-<link rel="icon" href="favicon.png">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="shortcut icon" href="favicon.png" type="image/png">
 
 <!-- Uploadcare -->
 <script>
@@ -21,9 +22,7 @@ UPLOADCARE_MULTIPLE = true;
     padding: 0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
@@ -32,12 +31,8 @@ body {
     min-height: 100vh;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+a { text-decoration: none; color: inherit; }
 
-/* NAVBAR */
 .nav {
     position: sticky;
     top: 0;
@@ -59,11 +54,8 @@ a {
     transition: color .2s;
 }
 
-.nav a:hover {
-    color: #facc15;
-}
+.nav a:hover { color: #facc15; }
 
-/* HERO MINI */
 .hero-mini {
     text-align: center;
     padding: 50px 20px 30px;
@@ -77,16 +69,9 @@ a {
     margin-bottom: 10px;
 }
 
-.hero-mini h1 span {
-    color: #facc15;
-}
+.hero-mini h1 span { color: #facc15; }
+.hero-mini p { color: #64748b; font-size: 15px; }
 
-.hero-mini p {
-    color: #64748b;
-    font-size: 15px;
-}
-
-/* TRUST BADGES */
 .badges {
     display: flex;
     justify-content: center;
@@ -103,18 +88,14 @@ a {
     color: #94a3b8;
 }
 
-.badge-icon {
-    font-size: 18px;
-}
+.badge-icon { font-size: 18px; }
 
-/* MAIN LAYOUT */
 .main {
     max-width: 680px;
     margin: 40px auto;
     padding: 0 20px 60px;
 }
 
-/* BACK */
 .back {
     display: inline-flex;
     align-items: center;
@@ -125,11 +106,8 @@ a {
     transition: color .2s;
 }
 
-.back:hover {
-    color: #e2e8f0;
-}
+.back:hover { color: #e2e8f0; }
 
-/* FORM CARD */
 .form-card {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -137,10 +115,7 @@ a {
     padding: 36px;
 }
 
-/* SECTION DIVIDER */
-.form-section {
-    margin-bottom: 28px;
-}
+.form-section { margin-bottom: 28px; }
 
 .form-section-title {
     font-size: 13px;
@@ -153,10 +128,7 @@ a {
     border-bottom: 1px solid rgba(250, 204, 21, 0.15);
 }
 
-/* FORM FIELDS */
-.field {
-    margin-bottom: 16px;
-}
+.field { margin-bottom: 16px; }
 
 .field label {
     display: block;
@@ -208,14 +180,12 @@ a {
     color: #e2e8f0;
 }
 
-/* TWO COLUMNS */
 .field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
 
-/* HINT */
 .hint {
     font-size: 12px;
     color: #475569;
@@ -223,7 +193,6 @@ a {
     line-height: 1.5;
 }
 
-/* UPLOAD AREA */
 .upload-wrapper {
     border: 1px dashed rgba(255, 255, 255, 0.15);
     border-radius: 10px;
@@ -238,7 +207,41 @@ a {
     margin-bottom: 12px;
 }
 
-/* SUBMIT BTN */
+/* GDPR */
+.gdpr-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.gdpr-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #facc15;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
+.gdpr-row label {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.gdpr-row label a {
+    color: #facc15;
+    text-decoration: underline;
+}
+
 .submit-btn {
     width: 100%;
     padding: 16px;
@@ -250,19 +253,12 @@ a {
     font-weight: 700;
     cursor: pointer;
     transition: opacity .2s, transform .1s;
-    margin-top: 8px;
     font-family: inherit;
 }
 
-.submit-btn:hover {
-    opacity: .9;
-}
+.submit-btn:hover { opacity: .9; }
+.submit-btn:active { transform: scale(0.99); }
 
-.submit-btn:active {
-    transform: scale(0.99);
-}
-
-/* CONTACT ALTERNATIVE */
 .alt-contact {
     text-align: center;
     margin-top: 24px;
@@ -270,18 +266,12 @@ a {
     color: #475569;
 }
 
-.alt-contact a {
-    color: #facc15;
-    font-weight: 600;
-}
+.alt-contact a { color: #facc15; font-weight: 600; }
 
-/* POPUP */
 .popup {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.75);
     display: none;
     justify-content: center;
@@ -301,10 +291,7 @@ a {
     text-align: center;
 }
 
-.popup-icon {
-    font-size: 52px;
-    margin-bottom: 16px;
-}
+.popup-icon { font-size: 52px; margin-bottom: 16px; }
 
 .popup-box h3 {
     font-size: 24px;
@@ -313,23 +300,17 @@ a {
     margin-bottom: 10px;
 }
 
-.popup-box p {
-    color: #94a3b8;
-    font-size: 15px;
-    line-height: 1.6;
-}
+.popup-box p { color: #94a3b8; font-size: 15px; line-height: 1.6; }
 
 .close-btn {
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: 14px; right: 14px;
     background: rgba(255,255,255,0.07);
     border: none;
     color: #94a3b8;
     font-size: 16px;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -337,10 +318,7 @@ a {
     transition: background .2s;
 }
 
-.close-btn:hover {
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-}
+.close-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
 .call-btn {
     display: block;
@@ -354,17 +332,9 @@ a {
     transition: opacity .2s;
 }
 
-.call-btn:hover {
-    opacity: .88;
-}
+.call-btn:hover { opacity: .88; }
+.popup-note { margin-top: 14px; font-size: 13px; color: #475569; }
 
-.popup-note {
-    margin-top: 14px;
-    font-size: 13px;
-    color: #475569;
-}
-
-/* FOOTER */
 .footer {
     border-top: 1px solid rgba(255,255,255,0.07);
     padding: 24px 20px;
@@ -373,27 +343,18 @@ a {
     color: #334155;
 }
 
-/* MOBILE */
 @media (max-width: 560px) {
-    .form-card {
-        padding: 24px 18px;
-    }
-
-    .field-row {
-        grid-template-columns: 1fr;
-    }
-
-    .badges {
-        gap: 14px;
-    }
+    .form-card { padding: 24px 18px; }
+    .field-row { grid-template-columns: 1fr; }
+    .badges { gap: 14px; }
 }
 </style>
 </head>
 <body>
 
 <nav class="nav">
+    <a href="/"><img src="logo.png" alt="SHPILKA" style="height:32px;"></a>
     <a href="/">Domov</a>
-    <a href="/realizacie">Realizácie</a>
     <a href="/dopyt">Cenová ponuka</a>
     <a href="/#kontakt">Kontakt</a>
 </nav>
@@ -492,7 +453,15 @@ a {
                 <div class="hint" style="margin-top: 10px">Podporované formáty: JPG, PNG, MP4, PDF. Môžete nahrať viac súborov naraz.</div>
             </div>
 
-            <button type="submit" class="submit-btn">📩 Odoslať dopyt zadarmo</button>
+            <!-- GDPR -->
+            <div class="gdpr-row">
+                <input type="checkbox" id="gdpr" name="gdpr" required>
+                <label for="gdpr">
+                    Súhlasím so <a href="#">spracovaním osobných údajov</a> v súlade s nariadením GDPR. Údaje budú použité výlučne na vybavenie tohto dopytu.
+                </label>
+            </div>
+
+            <button type="submit" class="submit-btn">Odoslať dopyt zadarmo</button>
 
         </form>
 
@@ -509,7 +478,7 @@ a {
         <div class="popup-icon">👍</div>
         <h3>Ďakujeme!</h3>
         <p>Vaša žiadosť bola úspešne odoslaná. Ozveme sa vám čo najskôr s cenovou ponukou.</p>
-        <a href="tel:+421951729585" class="call-btn">📞 Zavolať teraz</a>
+        <a href="tel:+421951729585" class="call-btn">Zavolať teraz</a>
         <p class="popup-note">Ak je to súrne, neváhajte zavolať priamo.</p>
     </div>
 </div>
@@ -517,7 +486,7 @@ a {
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <div class="footer">
-    © 2025 SHPILKA s.r.o. – Rekonštrukcie interiérov Bratislava
+    © 2025 SHPILKA s.r.o. – Interiérové práce Bratislava a okolí
 </div>
 
 <script>
