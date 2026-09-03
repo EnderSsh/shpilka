@@ -1,29 +1,10 @@
-AKO PRIDAŤ NOVÚ REALIZÁCIU
-==========================
+AKO PRIDÁVAŤ ĎALŠIE REALIZÁCIE
 
-1. Nahrajte fotografie projektu do priečinka webu, napr.:
-   /realizacie/foto/bodrocka-1.jpg
-   /realizacie/foto/bodrocka-2.jpg
+1. Nový projekt pridaj cez lokálny admin-realizacie.html.
+2. Editor uloží údaje projektu do realizacie/projects.js a fotografie do realizacie/foto/...
+3. Na GitHub nahraj zmenenú zložku realizacie (alebo celý pripravený web).
+4. Hlavná stránka automaticky zobrazí 4 najnovšie projekty z projects.js.
+5. Stránka /realizacie/ automaticky zobrazí všetky projekty z projects.js.
+6. Ak projekt nemá vlastné pole url, otvorí sa cez /realizacie/projekt/?id=ID_PROJEKTU.
 
-2. Otvorte súbor:
-   /realizacie/projects.js
-
-3. Skopírujte existujúci objekt projektu a zmeňte:
-   id          - krátky unikátny názov bez medzier
-   title       - názov realizácie
-   location    - lokalita
-   type        - typ projektu
-   description - krátky popis
-   services    - vykonané práce
-   cover       - hlavná fotografia
-   images      - všetky fotografie v galérii
-
-4. Uložte súbor. Nová karta sa automaticky zobrazí na /realizacie/.
-
-GOOGLE ANALYTICS
-================
-V súbore /assets/site.js je riadok:
-const GA_MEASUREMENT_ID = '';
-
-Po vytvorení Google Analytics 4 sem vložte ID v tvare G-XXXXXXXXXX.
-Analytics sa načíta iba po súhlase používateľa s analytickými cookies.
+Do index.html už kvôli novej realizácii netreba zasahovať.
