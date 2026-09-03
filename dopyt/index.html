@@ -6,6 +6,7 @@
 <title>Cenová ponuka – SHPILKA Bratislava</title>
 <meta name="description" content="Získajte bezplatnú cenovú ponuku na rekonštrukciu bytu alebo interiéru v Bratislave. Odpovieme do 24 hodín.">
 <link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="/assets/site.css">
 
 <!-- Uploadcare -->
 <script>
@@ -353,6 +354,7 @@ a { text-decoration: none; color: inherit; }
 
 <nav class="nav">
     <a href="/">Domov</a>
+    <a href="/realizacie/">Realizácie</a>
     <a href="/dopyt">Cenová ponuka</a>
     <a href="/#kontakt">Kontakt</a>
 </nav>
@@ -455,7 +457,7 @@ a { text-decoration: none; color: inherit; }
             <div class="gdpr-row">
                 <input type="checkbox" id="gdpr" name="gdpr" required>
                 <label for="gdpr">
-                    Súhlasím so <a href="#">spracovaním osobných údajov</a> v súlade s nariadením GDPR. Údaje budú použité výlučne na vybavenie tohto dopytu.
+                    Beriem na vedomie <a href="/ochrana-osobnych-udajov/" target="_blank">informácie o spracúvaní osobných údajov</a>. Údaje budú použité na vybavenie môjho dopytu a prípravu cenovej ponuky.
                 </label>
             </div>
 
@@ -484,7 +486,13 @@ a { text-decoration: none; color: inherit; }
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <div class="footer">
-    © 2025 SHPILKA s.r.o. – Interiérové práce Bratislava a okolí
+    <div>Shpilka s. r. o. · IČO 57827371 · DIČ 2123134145 · <a href="mailto:info@shpilka.sk" style="color:#d4af37">info@shpilka.sk</a></div>
+    <div class="legal-footer">
+        <a href="/ochrana-osobnych-udajov/">Ochrana osobných údajov</a>
+        <a href="/cookies/">Cookies</a>
+        <button type="button" onclick="ShpilkaCookies.open()">Nastavenia cookies</button>
+    </div>
+    <div style="margin-top:12px">© <span id="year"></span> SHPILKA s. r. o. – Interiérové práce Bratislava a okolí</div>
 </div>
 
 <script>
@@ -493,6 +501,7 @@ function closePopup() {
 }
 
 document.getElementById("mainForm").addEventListener("submit", function() {
+    if (window.ShpilkaAnalytics) ShpilkaAnalytics.event("generate_lead", { form_name: "cenova_ponuka" });
     setTimeout(() => {
         document.getElementById("popup").style.display = "flex";
         document.getElementById("mainForm").reset();
@@ -502,6 +511,8 @@ document.getElementById("mainForm").addEventListener("submit", function() {
     }, 4000);
 });
 </script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="/assets/site.js"></script>
 
 </body>
 </html>
