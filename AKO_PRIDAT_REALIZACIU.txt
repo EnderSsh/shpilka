@@ -1,0 +1,29 @@
+AKO PRIDAŤ NOVÚ REALIZÁCIU
+==========================
+
+1. Nahrajte fotografie projektu do priečinka webu, napr.:
+   /realizacie/foto/bodrocka-1.jpg
+   /realizacie/foto/bodrocka-2.jpg
+
+2. Otvorte súbor:
+   /realizacie/projects.js
+
+3. Skopírujte existujúci objekt projektu a zmeňte:
+   id          - krátky unikátny názov bez medzier
+   title       - názov realizácie
+   location    - lokalita
+   type        - typ projektu
+   description - krátky popis
+   services    - vykonané práce
+   cover       - hlavná fotografia
+   images      - všetky fotografie v galérii
+
+4. Uložte súbor. Nová karta sa automaticky zobrazí na /realizacie/.
+
+GOOGLE ANALYTICS
+================
+V súbore /assets/site.js je riadok:
+const GA_MEASUREMENT_ID = '';
+
+Po vytvorení Google Analytics 4 sem vložte ID v tvare G-XXXXXXXXXX.
+Analytics sa načíta iba po súhlase používateľa s analytickými cookies.

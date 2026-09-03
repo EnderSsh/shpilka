@@ -12,6 +12,7 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://shpilka.sk/">
 <link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
 * {
     box-sizing: border-box;
@@ -510,6 +511,7 @@ a {
 
 <nav class="nav">
     <a href="/">Domov</a>
+    <a href="/realizacie/">Realizácie</a>
     <a href="/dopyt">Cenová ponuka</a>
     <a href="#kontakt">Kontakt</a>
 </nav>
@@ -616,6 +618,7 @@ a {
             <img src="img4.jpg" alt="Interiérové práce Bratislava">
         </div>
     </div>
+    <div style="text-align:center;margin-top:24px"><a href="/realizacie/" class="btn-secondary">Zobraziť všetky realizácie</a></div>
 </div>
 
 <!-- REVIEWS -->
@@ -724,8 +727,20 @@ a {
         <a href="https://www.instagram.com/shpilka.sk/" target="_blank"> Instagram</a>
         <a href="https://www.tiktok.com/@shpilka.s.r.o" target="_blank"> TikTok</a>
     </div>
-    <p style="color: #334155; font-size: 13px; margin-top: 30px">© 2025 SHPILKA s.r.o. – Rekonštrukcie interiérov Bratislava</p>
+    <div style="margin-top:28px;color:#64748b;font-size:13px;line-height:1.7">
+        <strong style="color:#94a3b8">Shpilka s. r. o.</strong><br>
+        IČO: 57827371 · DIČ: 2123134145<br>
+        Karpatské námestie 7770/10A, 831 06 Bratislava – Rača<br>
+        <a href="mailto:info@shpilka.sk" style="color:#d4af37">info@shpilka.sk</a>
+    </div>
+    <div class="legal-footer">
+        <a href="/ochrana-osobnych-udajov/">Ochrana osobných údajov</a>
+        <a href="/cookies/">Cookies</a>
+        <button type="button" onclick="ShpilkaCookies.open()">Nastavenia cookies</button>
+    </div>
+    <p style="color: #334155; font-size: 13px; margin-top: 18px">© <span id="year"></span> SHPILKA s. r. o. – Rekonštrukcie interiérov Bratislava</p>
 </div>
-
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="/assets/site.js"></script>
 </body>
 </html>
