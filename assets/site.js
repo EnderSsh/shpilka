@@ -1,15 +1,22 @@
 (function () {
-  const CONSENT_KEY = 'shpilka_cookie_consent_v1';
+  const CONSENT_KEY = 'shpilka_cookie_consent_v2';
   const GA_MEASUREMENT_ID = 'G-SYX0HGGWMW';
+  const META_PIXEL_ID = '1237004418599519';
 
   function getConsent() {
     try { return JSON.parse(localStorage.getItem(CONSENT_KEY)); } catch (_) { return null; }
   }
 
-  function setConsent(analytics) {
-    const value = { necessary: true, analytics: !!analytics, updatedAt: new Date().toISOString() };
+  function setConsent(analytics, marketing) {
+    const value = {
+      necessary: true,
+      analytics: !!analytics,
+      marketing: !!marketing,
+      updatedAt: new Date().toISOString()
+    };
     localStorage.setItem(CONSENT_KEY, JSON.stringify(value));
     if (value.analytics) loadAnalytics();
+    if (value.marketing) loadMetaPixel();
     hideBanner();
   }
 
@@ -27,6 +34,29 @@
     window.gtag('event', 'consent_analytics_granted');
   }
 
+  function loadMetaPixel() {
+    if (!META_PIXEL_ID || window.__shpilkaMetaLoaded) return;
+    window.__shpilkaMetaLoaded = true;
+
+    !function(f,b,e,v,n,t,s) {
+      if(f.fbq)return;
+      n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;
+      n.push=n;
+      n.loaded=!0;
+      n.version='2.0';
+      n.queue=[];
+      t=b.createElement(e);
+      t.async=!0;
+      t.src=v;
+      s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+    window.fbq('init', META_PIXEL_ID);
+    window.fbq('track', 'PageView');
+  }
+
 
 
   function trackEvent(name, params) {
@@ -34,6 +64,13 @@
     if (!consent || !consent.analytics) return;
     loadAnalytics();
     if (window.gtag) window.gtag('event', name, params || {});
+  }
+
+  function trackMetaEvent(name, params) {
+    const consent = getConsent();
+    if (!consent || !consent.marketing) return;
+    loadMetaPixel();
+    if (window.fbq) window.fbq('track', name, params || {});
   }
 
   function setupLeadTracking() {
@@ -58,6 +95,7 @@
     const current = getConsent();
     if (current && !force) {
       if (current.analytics) loadAnalytics();
+      if (current.marketing) loadMetaPixel();
       return;
     }
 
@@ -69,7 +107,7 @@
       <div class="cookie-box">
         <div class="cookie-copy">
           <strong>Používame súbory cookies</strong>
-          <p>Nevyhnutné cookies sú potrebné na fungovanie webu. Analytické cookies použijeme iba s vaším súhlasom na meranie návštevnosti a zlepšovanie stránky.</p>
+          <p>Nevyhnutné cookies sú potrebné na fungovanie webu. Analytické a marketingové cookies použijeme iba s vaším súhlasom.</p>
           <a href="/cookies/">Viac o cookies</a>
         </div>
         <div class="cookie-actions">
@@ -80,6 +118,7 @@
         <div class="cookie-settings" hidden>
           <label><span><b>Nevyhnutné</b><small>Vždy aktívne – zabezpečujú základné fungovanie stránky.</small></span><input type="checkbox" checked disabled></label>
           <label><span><b>Analytické</b><small>Google Analytics – iba po vašom súhlase.</small></span><input id="cookie-analytics" type="checkbox"></label>
+          <label><span><b>Marketingové</b><small>Meta Pixel – meranie účinnosti reklamy a odoslaných dopytov.</small></span><input id="cookie-marketing" type="checkbox"></label>
           <button type="button" class="cookie-btn primary save" data-cookie="save">Uložiť nastavenia</button>
         </div>
       </div>`;
@@ -87,14 +126,17 @@
 
     const settings = wrap.querySelector('.cookie-settings');
     const analytics = wrap.querySelector('#cookie-analytics');
+    const marketing = wrap.querySelector('#cookie-marketing');
     if (current) analytics.checked = !!current.analytics;
-    wrap.querySelector('[data-cookie="accept"]').onclick = () => setConsent(true);
-    wrap.querySelector('[data-cookie="reject"]').onclick = () => setConsent(false);
+    if (current) marketing.checked = !!current.marketing;
+    wrap.querySelector('[data-cookie="accept"]').onclick = () => setConsent(true, true);
+    wrap.querySelector('[data-cookie="reject"]').onclick = () => setConsent(false, false);
     wrap.querySelector('[data-cookie="settings"]').onclick = () => { settings.hidden = !settings.hidden; };
-    wrap.querySelector('[data-cookie="save"]').onclick = () => setConsent(analytics.checked);
+    wrap.querySelector('[data-cookie="save"]').onclick = () => setConsent(analytics.checked, marketing.checked);
   }
 
   window.ShpilkaCookies = { open: () => renderBanner(true), getConsent };
   window.ShpilkaAnalytics = { event: trackEvent };
+  window.ShpilkaMeta = { event: trackMetaEvent };
   document.addEventListener('DOMContentLoaded', () => { renderBanner(false); setupLeadTracking(); });
 })();

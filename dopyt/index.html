@@ -376,8 +376,7 @@ a { text-decoration: none; color: inherit; }
     <div class="form-card">
         <form id="mainForm"
               action="https://formspree.io/f/mkokgrrq"
-              method="POST"
-              target="hidden_iframe">
+              method="POST">
 
             <!-- KONTAKT -->
             <div class="form-section">
@@ -483,8 +482,6 @@ a { text-decoration: none; color: inherit; }
     </div>
 </div>
 
-<iframe name="hidden_iframe" style="display:none;"></iframe>
-
 <div class="footer">
     <div>Shpilka s. r. o. · IČO 57827371 · DIČ 2123134145 · <a href="mailto:shpilkaandrii@gmail.com" style="color:#d4af37">shpilkaandrii@gmail.com</a></div>
     <div class="legal-footer">
@@ -500,15 +497,40 @@ function closePopup() {
     window.location.href = "/";
 }
 
-document.getElementById("mainForm").addEventListener("submit", function() {
-    if (window.ShpilkaAnalytics) ShpilkaAnalytics.event("generate_lead", { form_name: "cenova_ponuka" });
-    setTimeout(() => {
+document.getElementById("mainForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const submitButton = form.querySelector(".submit-btn");
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = "Odosielam…";
+
+    try {
+        const response = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) throw new Error("Formspree submission failed");
+
+        if (window.ShpilkaAnalytics) {
+            ShpilkaAnalytics.event("generate_lead", { form_name: "cenova_ponuka" });
+        }
+        if (window.ShpilkaMeta) {
+            ShpilkaMeta.event("Lead", { content_name: "cenova_ponuka" });
+        }
+
         document.getElementById("popup").style.display = "flex";
-        document.getElementById("mainForm").reset();
-    }, 800);
-    setTimeout(() => {
-        window.location.href = "/";
-    }, 4000);
+        form.reset();
+        setTimeout(() => { window.location.href = "/"; }, 4000);
+    } catch (_) {
+        alert("Dopyt sa nepodarilo odoslať. Skúste to znova alebo nám zavolajte na +421 951 729 585.");
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+    }
 });
 </script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
