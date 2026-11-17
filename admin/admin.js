@@ -13,7 +13,7 @@ function render(){
  $('list').innerHTML='';
  projects.forEach(function(p,i){
   var box=document.createElement('div');box.className='item';
-  var im=document.createElement('img');im.alt='';im.loading='lazy';im.src=previewFor(p.cover)||p.cover||'/favicon.png';box.appendChild(im);
+  var im=document.createElement('img');im.alt='';im.loading='lazy';im.src=previewFor(p.cover)||p.cover||'/favicon.png';box.appendChild(im);thumb(p.cover,im);
   var info=document.createElement('div');info.className='itemmain';info.innerHTML='<strong>'+esc(p.title)+'</strong><small>'+esc(p.location)+' · '+esc(p.area)+' · '+(p.images||[]).length+' fotografií</small>';box.appendChild(info);
   var actions=document.createElement('div');actions.className='controls';
   var b=document.createElement('button');b.className='admbtn';b.textContent='Upraviť';b.onclick=function(){openEdit(i)};actions.appendChild(b);
