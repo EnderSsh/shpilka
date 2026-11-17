@@ -106,6 +106,33 @@ async function onPhotos(ev){
  }
  renderThumbs();photosProcessing=false;$('saveBtn').disabled=false;$('savePublishBtn').disabled=false;msg('Pridaných fotografií: '+files.length+'. Zmeny ešte nie sú publikované.')
 }
+function decodeGithubText(file){
+ if(!file||file.encoding!=='base64'||!file.content)throw new Error('GitHub nevrátil obsah zoznamu projektov');
+ var binary=atob(file.content.replace(/\s/g,'')),bytes=new Uint8Array(binary.length);
+ for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+ return new TextDecoder().decode(bytes)
+}
+async function fetchRemoteProjects(){
+ if(connected){
+  var result=await api('/contents/realizacie/projects.js');
+  remoteBaseSha=result.sha;
+  return parseProjects(decodeGithubText(result))
+ }
+ var result=await fetch('/realizacie/projects.js?admin_refresh='+Date.now(),{cache:'no-store'});
+ if(!result.ok)throw new Error('Nepodarilo sa načítať web: HTTP '+result.status);
+ return parseProjects(await result.text())
+}
+async function refreshProjects(){
+ if(changed&&!confirm('Zahodiť miestne nepublikované zmeny a načítať skutočný stav zo stránky?'))return;
+ try{
+  msg('Načítavam aktuálny zoznam…');
+  var actual=await fetchRemoteProjects();
+  projects=actual;changed=false;pending.clear();uploadedCache.clear();importMode=false;
+  localStorage.removeItem(DRAFTKEY);
+  previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();
+  msg('Načítaný aktuálny zoznam: '+projects.length+' realizácií. Staré miestne koncepty boli odstránené.');
+ }catch(e){console.error(e);msg('Obnovenie sa nepodarilo: '+e.message+'. Miestny koncept nebol vymazaný.')}
+}
 function parseProjects(s){
  var clean=s.replace(/^\uFEFF/,'').trim().replace(/^window\.SHPILKA_PROJECTS\s*=\s*/,'').replace(/;\s*$/,'');
  var p=JSON.parse(clean);if(!Array.isArray(p)||p.some(function(x){return !x.id||!x.title}))throw new Error('Neplatný zoznam projektov');
@@ -137,7 +164,7 @@ async function api(path,opts){
 async function connect(){
  var t=$('token').value.trim();if(!t)return msg('Vložte GitHub token.');
  token=t;msg('Overujem prístup…');
- try{await api('/contents/realizacie/projects.js');connected=true;$('token').value='';$('connect').disabled=true;$('disconnect').disabled=false;msg('Účet pripojený. Môžete publikovať zmeny.')}catch(e){token='';connected=false;msg('Pripojenie sa nepodarilo: '+e.message+'. Skontrolujte oprávnenie Contents: Read and write.')}summary()
+ try{var live=await api('/contents/realizacie/projects.js');remoteBaseSha=live.sha;connected=true;$('token').value='';$('connect').disabled=true;$('disconnect').disabled=false;if(!changed){projects=parseProjects(decodeGithubText(live));render()}msg(changed?'GitHub pripojený. POZOR: máte miestny koncept, ktorý sa ešte líši od webu. Skontrolujte ho pred publikovaním, alebo kliknite na „Načítať aktuálny web“.':'GitHub pripojený. Zobrazuje sa skutočný stav z GitHubu: '+projects.length+' realizácií.')}catch(e){token='';connected=false;msg('Pripojenie sa nepodarilo: '+e.message+'. Skontrolujte oprávnenie Contents: Read and write.')}summary()
 }
 async function sleep(ms){return new Promise(function(resolve){setTimeout(resolve,ms)})}
 async function makeBlob(entry){
@@ -152,12 +179,21 @@ async function uploadRetry(path,entry,n){
    msg('GitHub obmedzil nahrávanie. Opakujem fotografiu '+n+' (pokus '+(k+2)+').');await sleep(Math.max(e.retryAfter*1000,10000*(k+1)))}
  }
 }
-async function publish(){
+async function publish(skipConfirm){
  if(!connected||!changed||busy)return;
- if(!confirm('Publikovať '+projects.length+' realizácií na živom shpilka.sk? Tento krok zmení verejné portfólio.'))return;
+ if(photosProcessing){msg('Počkajte na dokončenie spracovania fotografií.');return}
+ if(!skipConfirm&&!confirm('Publikovať '+projects.length+' realizácií na živom shpilka.sk? Tento krok zmení verejné portfólio.'))return;
  busy=true;summary();
  try{
   msg('Kontrolujem aktuálnu verziu GitHub…');
+  var currentFile=await api('/contents/realizacie/projects.js');
+  if(remoteBaseSha&&currentFile.sha!==remoteBaseSha)throw new Error('Zoznam realizácií sa zmenil v inom okne alebo zariadení. Neprepísal som ho. Pred opakovaním načítajte aktuálny web.');
+  var remoteList=parseProjects(decodeGithubText(currentFile));
+  var uploadedOnWeb=new Set();
+  remoteList.forEach(function(p){(p.images||[]).forEach(function(im){uploadedOnWeb.add((typeof im==='string'?im:im.src).replace(/^\//,''))});if(p.cover)uploadedOnWeb.add(p.cover.replace(/^\//,''))});
+  var missing=[];
+  projects.forEach(function(p){(p.images||[]).forEach(function(im){var path=(typeof im==='string'?im:im.src).replace(/^\//,'');if(path.startsWith('realizacie/foto/')&&!pending.has(path)&&!uploadedOnWeb.has(path))missing.push(path)})});
+  if(missing.length)throw new Error('Chýbajú nové fotografie ('+missing.length+'). Súbory sa po obnovení karty nenačítajú z miestneho konceptu. Znovu ich pridajte alebo obnovte zoznam zo stránky.');
   var ref=await api('/git/ref/heads/main'),head=ref.object.sha,commit=await api('/git/commits/'+head),tree=[];
   var referenced=new Set();
   projects.forEach(function(p){(p.images||[]).forEach(function(im){referenced.add((typeof im==='string'?im:im.src).replace(/^\//,''))});if(p.cover)referenced.add(p.cover.replace(/^\//,''))});
@@ -173,7 +209,7 @@ async function publish(){
   var newTree=await api('/git/trees',{method:'POST',body:{base_tree:commit.tree.sha,tree:tree}});
   var newCommit=await api('/git/commits',{method:'POST',body:{message:'Update Shpilka portfolio via online admin ('+projects.length+' projects)',tree:newTree.sha,parents:[head]}});
   await api('/git/refs/heads/main',{method:'PATCH',body:{sha:newCommit.sha,force:false}});
-  changed=false;importMode=false;pending.clear();uploadedCache.clear();importedZip=null;localStorage.removeItem(DRAFTKEY);
+  changed=false;remoteBaseSha=null;importMode=false;pending.clear();uploadedCache.clear();importedZip=null;localStorage.removeItem(DRAFTKEY);
   msg('Hotovo. GitHub prijal '+projects.length+' realizácií a '+total+' nových fotografií. Po aktualizácii GitHub Pages budú viditeľné na /realizacie/.');
  }catch(e){console.error(e);msg('Publikovanie nebolo dokončené: '+e.message+'. Pripravené zmeny zostali v tejto karte. Skúste to znova.')}
  finally{busy=false;summary()}
@@ -183,7 +219,7 @@ $('newBtn').onclick=function(){openEdit(-1)};
 $('cancelBtn').onclick=closeEdit;$('cancelBtn2').onclick=closeEdit;
 $('saveBtn').onclick=function(){saveEdit(false)};$('savePublishBtn').onclick=function(){saveEdit(true)};$('photosInput').onchange=onPhotos;
 $('zipInput').onchange=onZip;$('publishBtn').onclick=publish;
-$('refreshBtn').onclick=function(){if(changed&&!confirm('Zahodiť neprenesené zmeny?'))return;pending.clear();uploadedCache.clear();localStorage.removeItem(DRAFTKEY);projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});changed=false;importMode=false;previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();msg('Zoznam zo stránky bol obnovený.')};
+$('refreshBtn').onclick=refreshProjects;
 window.addEventListener('beforeunload',function(e){if(changed){e.preventDefault();e.returnValue=''}});
-render();if(draftRestored)msg('Načítaný miestny koncept. Zmeny ešte NIE SÚ na shpilka.sk. Na publikovanie je potrebná autorizácia GitHub.');
+render();if(draftRestored)msg('Načítaný starší miestny koncept. Môže sa líšiť od publikovaných realizácií. Ak vidíte už zmazaný testovací projekt, kliknite na „Načítať aktuálny web (zahodiť koncept)“.');else fetchRemoteProjects().then(function(actual){if(!changed){projects=actual;render();msg('Zoznam aktuálny: '+projects.length+' realizácií.')}}).catch(function(e){console.warn('Live site refresh failed',e)});
 })();
