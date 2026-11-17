@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="sk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Administrácia realizácií — Shpilka</title>
+<link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/brand.css">
+<style>
+:root{color-scheme:dark}body{background:#121712;color:#f5f4ef} .adm{max-width:1150px;margin:0 auto;padding:34px 18px 80px}
+h1{font-size:clamp(28px,5vw,46px);margin:6px 0 14px}h2{font-size:23px;margin:8px 0 16px}h3{font-size:18px}
+.adm p{color:#bcc6b8;line-height:1.55}.admbox{background:#1b221b;border:1px solid #3a493d;border-radius:14px;padding:20px;margin:18px 0}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.controls>*{max-width:100%}
+.admbtn{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border:1px solid #687765;background:#252f26;color:#f6f5f0;border-radius:8px;cursor:pointer;font-weight:650;text-decoration:none;min-height:44px}
+.admbtn.primary{background:#d9b77b;color:#171d16;border-color:#d9b77b}.admbtn.warn{border-color:#b26c6c;color:#efb7b7}.admbtn:disabled{opacity:.45;cursor:not-allowed}
+.adm input:not([type=file]),.adm select,.adm textarea{font:inherit;border-radius:8px;border:1px solid #657263;background:#111711;padding:11px;color:#fff;width:100%;min-height:42px}
+.adm textarea{min-height:170px;resize:vertical}.adm label.field{display:block;font-weight:600;font-size:13px;color:#dfdfd4}
+.field span{display:block;margin-bottom:6px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}.span2{grid-column:1/-1}
+.item{display:flex;gap:15px;padding:14px 0;border-bottom:1px solid #3b493c;align-items:center}.item img{width:115px;height:86px;border-radius:8px;object-fit:cover;background:#323a34}.itemmain{min-width:0;flex:1}.itemmain strong{display:block;font-size:16px}.item small{color:#bbc6bc}
+.photoGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.photoTile{border:1px solid #475246;background:#151b17;border-radius:9px;padding:6px;min-width:0}.photoTile img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:5px}.photoTile select{font-size:12px!important}.tiny{font-size:12px!important;padding:6px!important;min-height:32px!important}.mini{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}.mini button{flex:1}
+#message{white-space:pre-wrap;line-height:1.55;color:#d9b77b;min-height:25px}.notice{font-size:13px;color:#b4c3af}.hide{display:none!important}.pill{font-size:12px;border:1px solid #536750;padding:3px 8px;border-radius:30px}
+@media(max-width:700px){.fields{grid-template-columns:1fr}.span2{grid-column:auto}.photoGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.item{flex-wrap:wrap}.item img{width:86px;height:69px}.item .controls{width:100%}}
+</style></head>
+<body><header class="site-header"><nav class="wrap site-nav"><a class="brand" href="/">Shpilka</a><div class="links"><a href="/realizacie/">Naše realizácie</a><a href="/">Domov</a></div></nav></header>
+<main class="adm">
+<p class="eyebrow">SHPILKA / SPRÁVA PORTFÓLIA</p><h1>Administrácia realizácií</h1>
+<p>Pridávajte projekty, opisy a fotografie priamo na shpilka.sk. Verejný dizajn stránky zostáva bez zmeny.</p>
+<div class="admbox" id="authBox">
+<h2>1. Pripojenie k vášmu GitHub účtu</h2>
+<p>Web je na GitHub Pages. Na zápis fotografií potrebuje oprávnenie k repozitáru <b>EnderSsh/shpilka</b>. Vytvorte si <a target="_blank" rel="noopener" href="https://github.com/settings/personal-access-tokens/new">fine-grained token na GitHube</a>: Repository access → Only select repositories → <b>shpilka</b>, Permissions → Contents → <b>Read and write</b>.</p>
+<div class="controls"><input style="max-width:520px" id="token" type="password" placeholder="Vložte GitHub token" autocomplete="off"><button class="admbtn primary" id="connect">Pripojiť</button><button class="admbtn" id="disconnect" disabled>Odpojiť</button></div>
+<p class="notice">Token neukladáme do súborov webu ani do úložiska prehliadača. Existuje iba počas otvorenej relácie. Nikomu ho neposielajte.</p>
+</div>
+<div class="admbox">
+<h2>2. Existujúce realizácie</h2>
+<div class="controls"><button class="admbtn primary" id="newBtn">+ Nová realizácia</button><label class="admbtn">Import pripraveného balíka ZIP<input id="zipInput" style="display:none" type="file" accept=".zip,application/zip"></label><button class="admbtn" id="refreshBtn">Obnoviť zo stránky</button></div>
+<p class="notice">Balík ZIP obsahuje súbor realizacie/projects.js a fotografie v realizacie/foto/. Import pripraví zmeny; na web sa zapíšu až po kliknutí na „Publikovať na webe“.</p>
+<div id="list"></div>
+</div>
+<div class="admbox hide" id="editor">
+<div class="controls" style="justify-content:space-between"><h2 id="editorTitle">Nová realizácia</h2><button class="admbtn" id="cancelBtn">Zavrieť</button></div>
+<div class="fields">
+<label class="field span2"><span>Názov *</span><input id="fTitle" required></label>
+<label class="field"><span>Lokalita</span><input id="fLocation"></label>
+<label class="field"><span>Typ</span><select id="fType"><option>Rekonštrukcia bytu</option><option>Sadrokartón</option><option>Maľovanie</option><option>Obklady a dlažby</option><option>Novostavba</option><option>Iné</option></select></label>
+<label class="field"><span>Plocha (napr. 74 m²)</span><input id="fArea"></label>
+<label class="field"><span>Trvanie</span><input id="fDuration" placeholder="6 týždňov"></label>
+<label class="field span2"><span>Opis projektu a vykonané práce</span><textarea id="fDescription"></textarea></label>
+<label class="field span2"><span>Výsledok realizácie</span><textarea id="fResult" style="min-height:80px"></textarea></label>
+<label class="field span2"><span>Poznámka (voliteľné)</span><textarea id="fNote" style="min-height:65px"></textarea></label>
+<label class="field span2"><span>Typy prác (oddeľte čiarkou)</span><input id="fServices" placeholder="Búranie, Sadrokartón, Maľovanie"></label>
+</div>
+<h3>Fotografie</h3><label class="admbtn">+ Pridať fotografie (viac naraz)<input style="display:none" id="photosInput" type="file" accept="image/*" multiple></label><p class="notice">Pri nových fotkách sa obrázky zmenšia kvôli rýchlosti webu. Pre každú fotku môžete vybrať etapu, poradie a titulnú fotografiu.</p>
+<div class="photoGrid" id="photoGrid"></div>
+<div class="controls" style="margin-top:22px"><button class="admbtn primary" id="saveBtn">Uložiť zmeny do zoznamu</button><button class="admbtn" id="cancelBtn2">Zrušiť</button></div>
+</div>
+<div class="admbox" id="publishBox">
+<h2>3. Publikovanie na shpilka.sk</h2>
+<p id="summary">Zatiaľ bez zmien.</p><div class="controls"><button class="admbtn primary" id="publishBtn" disabled>Publikovať na webe</button><a class="admbtn" href="/realizacie/" target="_blank" rel="noopener">Pozrieť realizácie</a></div>
+<p class="notice">Pri veľkom importe nechajte kartu otvorenú až do potvrdenia dokončenia. Fotografovanie a ostatné sekcie hlavného webu sa nemenia. Importovaná verzia nahradí doterajší zoznam realizácií, staré súbory však zostanú v repozitári ako záloha.</p>
+<p id="message" role="status" aria-live="polite"></p>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous"></script>
+<script src="/realizacie/projects.js"></script>
+<script src="/admin/admin.js"></script>
+</body></html>
