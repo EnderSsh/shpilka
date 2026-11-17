@@ -21,7 +21,7 @@
  if(!ps.length){root.innerHTML='<p style="color:#94a3b8">Realizácie pripravujeme.</p>';return;}
  root.innerHTML=ps.map(p=>{
    const meta=[p.location,p.area,p.duration].filter(Boolean).map(esc).join(' · ');
-   return `<article class="project-card"><a href="${projectUrl(p)}"><img loading="lazy" src="${esc(p.cover)}" alt="${esc(p.title)}"></a><div class="project-body"><div class="meta">${meta}</div><h2>${esc(p.title)}</h2><p>${esc(p.description||'')}</p><a class="btn" href="${projectUrl(p)}">Pozrieť realizáciu →</a></div></article>`;
+   return `<article class="project-card"><a href="${projectUrl(p)}"><img loading="lazy" src="${esc(p.cover)}" alt="${esc(p.title)}"></a><div class="project-body"><div class="meta">${meta}</div><h2>${esc(p.title)}</h2><p>${esc((p.description||'').split('\n\n')[0])}</p><a class="btn" href="${projectUrl(p)}">Pozrieť realizáciu →</a></div></article>`;
  }).join('');
 })();
 </script>
