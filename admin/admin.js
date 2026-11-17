@@ -7,8 +7,9 @@ var DRAFTKEY='shpilka-admin-local-draft-v1',draftRestored=false;
 try{var saved=JSON.parse(localStorage.getItem(DRAFTKEY)||'null');if(saved&&Array.isArray(saved.projects)){projects=saved.projects;changed=true;draftRestored=true}}catch(e){console.warn('Unable to restore local draft',e)}
 function saveLocalDraft(){try{if(pending.size){localStorage.removeItem(DRAFTKEY);return false}localStorage.setItem(DRAFTKEY,JSON.stringify({projects:projects,storedAt:Date.now()}));return true}catch(e){console.warn('Local draft storage failed',e);return false}}
 var pending=new Map(), previews=new Map(), uploadedCache=new Map(), editIndex=-1, editPhotos=[], editCover='', showAllPhotos=false;
+var remoteBaseSha=null, photosProcessing=false, editorSubmitting=false;
 var $=function(id){return document.getElementById(id)};
-function msg(s){$('message').textContent=s}
+function msg(s){$('message').textContent=s; if($('listStatus'))$('listStatus').textContent=s}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]})}
 function slug(s){return String(s||'projekt').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'projekt'}
 function uniqueID(t){var base=slug(t), id=base, i=2;while(projects.some(function(p){return p.id===id})){id=base+'-'+i++}return id}
@@ -20,7 +21,7 @@ function render(){
   var info=document.createElement('div');info.className='itemmain';info.innerHTML='<strong>'+esc(p.title)+'</strong><small>'+esc(p.location)+' · '+esc(p.area)+' · '+(p.images||[]).length+' fotografií</small>';box.appendChild(info);
   var actions=document.createElement('div');actions.className='controls';
   var b=document.createElement('button');b.className='admbtn';b.textContent='Upraviť';b.onclick=function(){openEdit(i)};actions.appendChild(b);
-  var d=document.createElement('button');d.className='admbtn warn';d.textContent='Odstrániť';d.onclick=function(){if(confirm('Odstrániť z portfólia: '+p.title+'?')){projects.splice(i,1);changed=true;saveLocalDraft();render();summary();msg('Zmazané v miestnom koncepte. Na webe bude projekt odstránený až po publikovaní.')}};actions.appendChild(d);
+  var d=document.createElement('button');d.className='admbtn warn';d.textContent=connected?'Odstrániť z webu':'Odstrániť (koncept)';d.disabled=busy;d.onclick=function(){if(busy)return;var prompt=connected?'Naozaj odstrániť „'+p.title+'“ zo živého webu shpilka.sk?':'Odstrániť „'+p.title+'“ iba z miestneho konceptu? Bez pripojenia GitHub sa web nezmení.';if(!confirm(prompt))return;projects.splice(i,1);changed=true;saveLocalDraft();render();msg(connected?'Odstraňujem realizáciu zo živého webu…':'Odstránené len z konceptu. Po pripojení GitHub kliknite na „Publikovať na webe“.');if(connected)publish(true)};actions.appendChild(d);
   box.appendChild(actions);$('list').appendChild(box);
  });
  if(!projects.length)$('list').innerHTML='<p>Žiadne realizácie.</p>';
@@ -69,15 +70,21 @@ function openEdit(i){
  $('editorTitle').textContent=i<0?'Nová realizácia':'Upraviť realizáciu';$('editor').classList.remove('hide');renderThumbs();$('editor').scrollIntoView({behavior:'smooth'})
 }
 function closeEdit(){$('editor').classList.add('hide');$('photosInput').value='';editIndex=-1}
-function saveEdit(){
- var title=$('fTitle').value.trim();if(!title){alert('Zadajte názov realizácie.');return}
+function saveEdit(publishNow){
+ if(editorSubmitting||busy)return;
+ if(photosProcessing){msg('Počkajte na dokončenie spracovania fotografií.');return}
+ if(publishNow&&!connected){msg('Najprv vložte GitHub token a kliknite na Pripojiť. Projekt zatiaľ nie je publikovaný.');return}
+ editorSubmitting=true;
+ var title=$('fTitle').value.trim();if(!title){editorSubmitting=false;alert('Zadajte názov realizácie.');return}
  var p=editIndex<0?{id:uniqueID(title)}:Object.assign({},projects[editIndex]);
  p.title=title;p.location=$('fLocation').value.trim();p.type=$('fType').value;p.area=$('fArea').value.trim();p.duration=$('fDuration').value.trim();
  p.description=$('fDescription').value.trim();p.result=$('fResult').value.trim();p.note=$('fNote').value.trim();
  p.services=$('fServices').value.split(',').map(function(x){return x.trim()}).filter(Boolean);
  p.images=editPhotos.slice();p.cover=editCover||(p.images[0]&&p.images[0].src)||'';
  if(editIndex<0)projects.push(p);else projects[editIndex]=p;
- changed=true;var offlineSaved=saveLocalDraft();closeEdit();render();msg(offlineSaved?'Zmeny uložené v tomto prehliadači ako koncept. Na živom webe ešte nie sú; kliknite na „Publikovať na webe“.':'Zmeny pripravené v tejto karte. Nové fotografie nie sú uložené po zatvorení okna. Na publikovanie je potrebné pripojiť GitHub.')
+ changed=true;var offlineSaved=saveLocalDraft();closeEdit();render();editorSubmitting=false;
+ if(publishNow){msg('Publikujem zmeny na shpilka.sk…');publish(true);return}
+ msg(offlineSaved?'Koncept uložený v tomto prehliadači. Na webe ešte NIE JE zverejnený.':'Koncept pripravený len v otvorenej karte. Nové fotografie sa po jej zatvorení stratia. Publikujte zmeny pred zatvorením.')
 }
 async function resize(file){
  return new Promise(function(resolve,reject){var u=URL.createObjectURL(file),im=new Image();
@@ -86,7 +93,9 @@ async function resize(file){
  im.onerror=function(){URL.revokeObjectURL(u);reject(new Error('Fotografia sa nedá otvoriť'))};im.src=u})
 }
 async function onPhotos(ev){
+ if(photosProcessing)return;
  var files=Array.from(ev.target.files||[]);ev.target.value='';if(!files.length)return;
+ photosProcessing=true;$('saveBtn').disabled=true;$('savePublishBtn').disabled=true;
  var p=editIndex<0?null:projects[editIndex],id=p?p.id:uniqueID($('fTitle').value||'nova-realizacia');
  for(var i=0;i<files.length;i++){
   if(!files[i].type.startsWith('image/'))continue;
@@ -95,7 +104,7 @@ async function onPhotos(ev){
   pending.set(path,blob);editPhotos.push({src:'/'+path,stage:'Galéria',original:files[i].name});if(!editCover)editCover='/'+path}
   catch(e){msg('Fotografia '+files[i].name+': '+e.message)}
  }
- renderThumbs();msg('Pridaných fotografií: '+files.length+'. Zmeny ešte nie sú publikované.')
+ renderThumbs();photosProcessing=false;$('saveBtn').disabled=false;$('savePublishBtn').disabled=false;msg('Pridaných fotografií: '+files.length+'. Zmeny ešte nie sú publikované.')
 }
 function parseProjects(s){
  var clean=s.replace(/^\uFEFF/,'').trim().replace(/^window\.SHPILKA_PROJECTS\s*=\s*/,'').replace(/;\s*$/,'');
@@ -172,7 +181,7 @@ async function publish(){
 $('connect').onclick=connect;$('disconnect').onclick=function(){token='';connected=false;$('connect').disabled=false;$('disconnect').disabled=true;msg('Odpojené.');summary()};
 $('newBtn').onclick=function(){openEdit(-1)};
 $('cancelBtn').onclick=closeEdit;$('cancelBtn2').onclick=closeEdit;
-$('saveBtn').onclick=saveEdit;$('photosInput').onchange=onPhotos;
+$('saveBtn').onclick=function(){saveEdit(false)};$('savePublishBtn').onclick=function(){saveEdit(true)};$('photosInput').onchange=onPhotos;
 $('zipInput').onchange=onZip;$('publishBtn').onclick=publish;
 $('refreshBtn').onclick=function(){if(changed&&!confirm('Zahodiť neprenesené zmeny?'))return;pending.clear();uploadedCache.clear();localStorage.removeItem(DRAFTKEY);projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});changed=false;importMode=false;previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();msg('Zoznam zo stránky bol obnovený.')};
 window.addEventListener('beforeunload',function(e){if(changed){e.preventDefault();e.returnValue=''}});
