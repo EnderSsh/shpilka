@@ -1563,5 +1563,19 @@ window.SHPILKA_PROJECTS = [
         "original": "photo_31_2026-11-17_11-20-17.jpg"
       }
     ]
+  },
+  {
+    "id": "123",
+    "title": "123",
+    "location": "3",
+    "type": "Rekonštrukcia bytu",
+    "area": "23",
+    "duration": "",
+    "description": "34",
+    "result": "44",
+    "note": "",
+    "services": [],
+    "images": [],
+    "cover": ""
   }
 ];
