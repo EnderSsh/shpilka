@@ -1575,7 +1575,23 @@ window.SHPILKA_PROJECTS = [
     "result": "",
     "note": "",
     "services": [],
-    "images": [],
-    "cover": ""
+    "images": [
+      {
+        "src": "/realizacie/foto/123/1794941347930-0-czm50.jpg",
+        "stage": "Galéria",
+        "original": "photo_1_2026-11-17_11-20-17.jpg"
+      },
+      {
+        "src": "/realizacie/foto/123/1794941347956-1-7lrik.jpg",
+        "stage": "Galéria",
+        "original": "photo_1_2026-11-17_11-23-48.jpg"
+      },
+      {
+        "src": "/realizacie/foto/123/1794941347989-2-jq8fn.jpg",
+        "stage": "Galéria",
+        "original": "photo_2_2026-11-17_11-20-17.jpg"
+      }
+    ],
+    "cover": "/realizacie/foto/123/1794941347930-0-czm50.jpg"
   }
 ];
