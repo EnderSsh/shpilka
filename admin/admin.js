@@ -7,7 +7,7 @@ var DRAFTKEY='shpilka-admin-local-draft-v1',draftRestored=false;
 try{var saved=JSON.parse(localStorage.getItem(DRAFTKEY)||'null');if(saved&&Array.isArray(saved.projects)){projects=saved.projects;changed=true;draftRestored=true}}catch(e){console.warn('Unable to restore local draft',e)}
 function saveLocalDraft(){try{if(pending.size){localStorage.removeItem(DRAFTKEY);return false}localStorage.setItem(DRAFTKEY,JSON.stringify({projects:projects,storedAt:Date.now()}));return true}catch(e){console.warn('Local draft storage failed',e);return false}}
 var pending=new Map(), previews=new Map(), uploadedCache=new Map(), editIndex=-1, editPhotos=[], editCover='', showAllPhotos=false;
-var remoteBaseSha=null, photosProcessing=false, editorSubmitting=false;
+var remoteBaseSha=null, photosProcessing=false, editorSubmitting=false, editorOpen=false;
 var $=function(id){return document.getElementById(id)};
 function msg(s){$('message').textContent=s; if($('listStatus'))$('listStatus').textContent=s}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]})}
@@ -65,16 +65,16 @@ function renderThumbs(){
 function field(id,v){$(id).value=v||''}
 function openEdit(i){
  if(busy){msg('Práve prebieha publikovanie. Počkajte na jeho dokončenie.');return}
- editIndex=i;var p=i<0?{title:'',location:'',area:'',duration:'',description:'',result:'',note:'',services:[],images:[],type:'Rekonštrukcia bytu'}:projects[i];
+ editorOpen=true;editIndex=i;var p=i<0?{title:'',location:'',area:'',duration:'',description:'',result:'',note:'',services:[],images:[],type:'Rekonštrukcia bytu'}:projects[i];
  field('fTitle',p.title);field('fLocation',p.location);field('fType',p.type);field('fArea',p.area);field('fDuration',p.duration);
  field('fDescription',p.description);field('fResult',p.result);field('fNote',p.note);field('fServices',(p.services||[]).join(', '));
  editPhotos=(p.images||[]).map(function(img){return typeof img==='string'?{src:img,stage:'Galéria'}:Object.assign({},img)});
  editCover=p.cover||(editPhotos[0]&&editPhotos[0].src)||'';showAllPhotos=false;
  $('editorTitle').textContent=i<0?'Nová realizácia':'Upraviť realizáciu';$('editor').classList.remove('hide');renderThumbs();$('editor').scrollIntoView({behavior:'smooth'})
 }
-function closeEdit(){$('editor').classList.add('hide');$('photosInput').value='';editIndex=-1}
+function closeEdit(){editorOpen=false;$('editor').classList.add('hide');$('photosInput').value='';editIndex=-1}
 function saveEdit(publishNow){
- if(editorSubmitting||busy)return;
+ if(!editorOpen||editorSubmitting||busy)return;
  if(photosProcessing){msg('Počkajte na dokončenie spracovania fotografií.');return}
  if(publishNow&&!connected){msg('Najprv vložte GitHub token a kliknite na Pripojiť. Projekt zatiaľ nie je publikovaný.');return}
  editorSubmitting=true;
