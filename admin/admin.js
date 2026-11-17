@@ -3,7 +3,7 @@
 var REPO='EnderSsh/shpilka',API='https://api.github.com/repos/'+REPO;
 var projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});
 var token='', connected=false, changed=false, busy=false, importMode=false, importedZip=null;
-var pending=new Map(), previews=new Map(), editIndex=-1, editPhotos=[], editCover='', showAllPhotos=false;
+var pending=new Map(), previews=new Map(), uploadedCache=new Map(), editIndex=-1, editPhotos=[], editCover='', showAllPhotos=false;
 var $=function(id){return document.getElementById(id)};
 function msg(s){$('message').textContent=s}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]})}
@@ -111,7 +111,7 @@ async function onZip(ev){
  newProjects.forEach(function(p){(p.images||[]).forEach(function(img){refs.add((typeof img==='string'?img:img.src).replace(/^\//,''))});if(p.cover)refs.add(p.cover.replace(/^\//,''))});
  for(var path of refs){if(path.startsWith('realizacie/foto/')&&!assets.has(path)&&!projects.some(function(p){return (p.images||[]).some(function(x){return (typeof x==='string'?x:x.src).replace(/^\//,'')===path})})){throw new Error('Chýba fotografia v ZIP: '+path)}}
  if(!confirm('Nahradiť pracovný zoznam '+projects.length+' realizácií novým balíkom ('+newProjects.length+' realizácií, '+assets.size+' fotografií)? Na živom webe sa ešte nič nezmení.'))return;
- previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();pending=assets;importedZip=zip;projects=newProjects;changed=true;importMode=true;closeEdit();render();
+ previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();pending=assets;uploadedCache.clear();importedZip=zip;projects=newProjects;changed=true;importMode=true;closeEdit();render();
  msg('ZIP pripravený: '+projects.length+' realizácií a '+assets.size+' fotografií. Po pripojení GitHub kliknite na „Publikovať na webe“.');
  }catch(e){console.error(e);msg('Import zlyhal: '+e.message)}
 }
@@ -132,9 +132,10 @@ async function makeBlob(entry){
  var base64=typeof entry.async==='function'?await entry.async('base64'):toB64(await entry.arrayBuffer());
  return await api('/git/blobs',{method:'POST',body:{content:base64,encoding:'base64'}})
 }
-async function uploadRetry(entry,n){
+async function uploadRetry(path,entry,n){
+ if(uploadedCache.has(path))return {sha:uploadedCache.get(path)};
  for(var k=0;k<6;k++){
-  try{return await makeBlob(entry)}
+  try{var result=await makeBlob(entry);uploadedCache.set(path,result.sha);return result}
   catch(e){if(!(e.status===429||e.status===403||e.status===502||e.status===503)||k===5)throw e;
    msg('GitHub obmedzil nahrávanie. Opakujem fotografiu '+n+' (pokus '+(k+2)+').');await sleep(Math.max(e.retryAfter*1000,10000*(k+1)))}
  }
@@ -151,7 +152,7 @@ async function publish(){
   var queue=Array.from(pending.entries()).filter(function(kv){return referenced.has(kv[0])}),total=queue.length,done=0,next=0,uploaded=[];
   msg('Nahrávam '+total+' nových fotografií…');
   async function worker(){
-   while(next<queue.length){var ix=next++,pair=queue[ix],r=await uploadRetry(pair[1],ix+1);
+   while(next<queue.length){var ix=next++,pair=queue[ix],r=await uploadRetry(pair[0],pair[1],ix+1);
     uploaded.push({path:pair[0],mode:'100644',type:'blob',sha:r.sha});done++;msg('Nahrávam fotografie: '+done+' / '+total+'. Nezatvárajte túto kartu.');await sleep(900)}
   }
   await Promise.all([worker(),worker()]);
@@ -160,7 +161,7 @@ async function publish(){
   var newTree=await api('/git/trees',{method:'POST',body:{base_tree:commit.tree.sha,tree:tree}});
   var newCommit=await api('/git/commits',{method:'POST',body:{message:'Update Shpilka portfolio via online admin ('+projects.length+' projects)',tree:newTree.sha,parents:[head]}});
   await api('/git/refs/heads/main',{method:'PATCH',body:{sha:newCommit.sha,force:false}});
-  changed=false;importMode=false;pending.clear();importedZip=null;
+  changed=false;importMode=false;pending.clear();uploadedCache.clear();importedZip=null;
   msg('Hotovo. GitHub prijal '+projects.length+' realizácií a '+total+' nových fotografií. Po aktualizácii GitHub Pages budú viditeľné na /realizacie/.');
  }catch(e){console.error(e);msg('Publikovanie nebolo dokončené: '+e.message+'. Pripravené zmeny zostali v tejto karte. Skúste to znova.')}
  finally{busy=false;summary()}
@@ -170,7 +171,7 @@ $('newBtn').onclick=function(){openEdit(-1)};
 $('cancelBtn').onclick=closeEdit;$('cancelBtn2').onclick=closeEdit;
 $('saveBtn').onclick=saveEdit;$('photosInput').onchange=onPhotos;
 $('zipInput').onchange=onZip;$('publishBtn').onclick=publish;
-$('refreshBtn').onclick=function(){if(changed&&!confirm('Zahodiť neprenesené zmeny?'))return;pending.clear();projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});changed=false;importMode=false;previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();msg('Zoznam zo stránky bol obnovený.')};
+$('refreshBtn').onclick=function(){if(changed&&!confirm('Zahodiť neprenesené zmeny?'))return;pending.clear();uploadedCache.clear();projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});changed=false;importMode=false;previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();msg('Zoznam zo stránky bol obnovený.')};
 window.addEventListener('beforeunload',function(e){if(changed){e.preventDefault();e.returnValue=''}});
 render()
 })();
