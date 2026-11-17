@@ -3,6 +3,9 @@
 var REPO='EnderSsh/shpilka',API='https://api.github.com/repos/'+REPO;
 var projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});
 var token='', connected=false, changed=false, busy=false, importMode=false, importedZip=null;
+var DRAFTKEY='shpilka-admin-local-draft-v1',draftRestored=false;
+try{var saved=JSON.parse(localStorage.getItem(DRAFTKEY)||'null');if(saved&&Array.isArray(saved.projects)){projects=saved.projects;changed=true;draftRestored=true}}catch(e){console.warn('Unable to restore local draft',e)}
+function saveLocalDraft(){try{if(pending.size){localStorage.removeItem(DRAFTKEY);return false}localStorage.setItem(DRAFTKEY,JSON.stringify({projects:projects,storedAt:Date.now()}));return true}catch(e){console.warn('Local draft storage failed',e);return false}}
 var pending=new Map(), previews=new Map(), uploadedCache=new Map(), editIndex=-1, editPhotos=[], editCover='', showAllPhotos=false;
 var $=function(id){return document.getElementById(id)};
 function msg(s){$('message').textContent=s}
@@ -17,7 +20,7 @@ function render(){
   var info=document.createElement('div');info.className='itemmain';info.innerHTML='<strong>'+esc(p.title)+'</strong><small>'+esc(p.location)+' · '+esc(p.area)+' · '+(p.images||[]).length+' fotografií</small>';box.appendChild(info);
   var actions=document.createElement('div');actions.className='controls';
   var b=document.createElement('button');b.className='admbtn';b.textContent='Upraviť';b.onclick=function(){openEdit(i)};actions.appendChild(b);
-  var d=document.createElement('button');d.className='admbtn warn';d.textContent='Odstrániť';d.onclick=function(){if(confirm('Odstrániť z portfólia: '+p.title+'?')){projects.splice(i,1);changed=true;render();summary()}};actions.appendChild(d);
+  var d=document.createElement('button');d.className='admbtn warn';d.textContent='Odstrániť';d.onclick=function(){if(confirm('Odstrániť z portfólia: '+p.title+'?')){projects.splice(i,1);changed=true;saveLocalDraft();render();summary();msg('Zmazané v miestnom koncepte. Na webe bude projekt odstránený až po publikovaní.')}};actions.appendChild(d);
   box.appendChild(actions);$('list').appendChild(box);
  });
  if(!projects.length)$('list').innerHTML='<p>Žiadne realizácie.</p>';
@@ -74,7 +77,7 @@ function saveEdit(){
  p.services=$('fServices').value.split(',').map(function(x){return x.trim()}).filter(Boolean);
  p.images=editPhotos.slice();p.cover=editCover||(p.images[0]&&p.images[0].src)||'';
  if(editIndex<0)projects.push(p);else projects[editIndex]=p;
- changed=true;closeEdit();render();msg('Zmeny sú pripravené. Na uverejnenie kliknite na „Publikovať na webe“.')
+ changed=true;var offlineSaved=saveLocalDraft();closeEdit();render();msg(offlineSaved?'Zmeny uložené v tomto prehliadači ako koncept. Na živom webe ešte nie sú; kliknite na „Publikovať na webe“.':'Zmeny pripravené v tejto karte. Nové fotografie nie sú uložené po zatvorení okna. Na publikovanie je potrebné pripojiť GitHub.')
 }
 async function resize(file){
  return new Promise(function(resolve,reject){var u=URL.createObjectURL(file),im=new Image();
@@ -111,7 +114,7 @@ async function onZip(ev){
  newProjects.forEach(function(p){(p.images||[]).forEach(function(img){refs.add((typeof img==='string'?img:img.src).replace(/^\//,''))});if(p.cover)refs.add(p.cover.replace(/^\//,''))});
  for(var path of refs){if(path.startsWith('realizacie/foto/')&&!assets.has(path)&&!projects.some(function(p){return (p.images||[]).some(function(x){return (typeof x==='string'?x:x.src).replace(/^\//,'')===path})})){throw new Error('Chýba fotografia v ZIP: '+path)}}
  if(!confirm('Nahradiť pracovný zoznam '+projects.length+' realizácií novým balíkom ('+newProjects.length+' realizácií, '+assets.size+' fotografií)? Na živom webe sa ešte nič nezmení.'))return;
- previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();pending=assets;uploadedCache.clear();importedZip=zip;projects=newProjects;changed=true;importMode=true;closeEdit();render();
+ previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();pending=assets;uploadedCache.clear();importedZip=zip;projects=newProjects;changed=true;importMode=true;localStorage.removeItem(DRAFTKEY);closeEdit();render();
  msg('ZIP pripravený: '+projects.length+' realizácií a '+assets.size+' fotografií. Po pripojení GitHub kliknite na „Publikovať na webe“.');
  }catch(e){console.error(e);msg('Import zlyhal: '+e.message)}
 }
@@ -161,7 +164,7 @@ async function publish(){
   var newTree=await api('/git/trees',{method:'POST',body:{base_tree:commit.tree.sha,tree:tree}});
   var newCommit=await api('/git/commits',{method:'POST',body:{message:'Update Shpilka portfolio via online admin ('+projects.length+' projects)',tree:newTree.sha,parents:[head]}});
   await api('/git/refs/heads/main',{method:'PATCH',body:{sha:newCommit.sha,force:false}});
-  changed=false;importMode=false;pending.clear();uploadedCache.clear();importedZip=null;
+  changed=false;importMode=false;pending.clear();uploadedCache.clear();importedZip=null;localStorage.removeItem(DRAFTKEY);
   msg('Hotovo. GitHub prijal '+projects.length+' realizácií a '+total+' nových fotografií. Po aktualizácii GitHub Pages budú viditeľné na /realizacie/.');
  }catch(e){console.error(e);msg('Publikovanie nebolo dokončené: '+e.message+'. Pripravené zmeny zostali v tejto karte. Skúste to znova.')}
  finally{busy=false;summary()}
@@ -171,7 +174,7 @@ $('newBtn').onclick=function(){openEdit(-1)};
 $('cancelBtn').onclick=closeEdit;$('cancelBtn2').onclick=closeEdit;
 $('saveBtn').onclick=saveEdit;$('photosInput').onchange=onPhotos;
 $('zipInput').onchange=onZip;$('publishBtn').onclick=publish;
-$('refreshBtn').onclick=function(){if(changed&&!confirm('Zahodiť neprenesené zmeny?'))return;pending.clear();uploadedCache.clear();projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});changed=false;importMode=false;previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();msg('Zoznam zo stránky bol obnovený.')};
+$('refreshBtn').onclick=function(){if(changed&&!confirm('Zahodiť neprenesené zmeny?'))return;pending.clear();uploadedCache.clear();localStorage.removeItem(DRAFTKEY);projects=(window.SHPILKA_PROJECTS||[]).map(function(p){return JSON.parse(JSON.stringify(p))});changed=false;importMode=false;previews.forEach(function(u){URL.revokeObjectURL(u)});previews.clear();closeEdit();render();msg('Zoznam zo stránky bol obnovený.')};
 window.addEventListener('beforeunload',function(e){if(changed){e.preventDefault();e.returnValue=''}});
-render()
+render();if(draftRestored)msg('Načítaný miestny koncept. Zmeny ešte NIE SÚ na shpilka.sk. Na publikovanie je potrebná autorizácia GitHub.');
 })();
