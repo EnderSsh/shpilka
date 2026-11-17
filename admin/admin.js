@@ -32,6 +32,8 @@ function summary(){
  $('summary').textContent=projects.length+' realizácií · '+images+' fotografií. '+(changed?'Máte neprenesené zmeny.':'Zatiaľ bez zmien.');
  $('publishBtn').disabled=!connected||!changed||busy;
  $('newBtn').disabled=busy;$('zipInput').disabled=busy;
+ $('refreshBtn').disabled=busy;$('disconnect').disabled=busy||!connected;$('connect').disabled=busy||connected;
+ $('saveBtn').disabled=busy||photosProcessing;$('savePublishBtn').disabled=busy||photosProcessing;
 }
 function previewFor(src){return previews.get((src||'').replace(/^\//,''))||''}
 async function thumb(src,img){
@@ -62,6 +64,7 @@ function renderThumbs(){
 }
 function field(id,v){$(id).value=v||''}
 function openEdit(i){
+ if(busy){msg('Práve prebieha publikovanie. Počkajte na jeho dokončenie.');return}
  editIndex=i;var p=i<0?{title:'',location:'',area:'',duration:'',description:'',result:'',note:'',services:[],images:[],type:'Rekonštrukcia bytu'}:projects[i];
  field('fTitle',p.title);field('fLocation',p.location);field('fType',p.type);field('fArea',p.area);field('fDuration',p.duration);
  field('fDescription',p.description);field('fResult',p.result);field('fNote',p.note);field('fServices',(p.services||[]).join(', '));
@@ -123,6 +126,7 @@ async function fetchRemoteProjects(){
  return parseProjects(await result.text())
 }
 async function refreshProjects(){
+ if(busy){msg('Práve prebieha publikovanie. Počkajte na jeho dokončenie.');return}
  if(changed&&!confirm('Zahodiť miestne nepublikované zmeny a načítať skutočný stav zo stránky?'))return;
  try{
   msg('Načítavam aktuálny zoznam…');
