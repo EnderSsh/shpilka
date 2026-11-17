@@ -1563,35 +1563,5 @@ window.SHPILKA_PROJECTS = [
         "original": "photo_31_2026-11-17_11-20-17.jpg"
       }
     ]
-  },
-  {
-    "id": "123",
-    "title": "123",
-    "location": "34",
-    "type": "Rekonštrukcia bytu",
-    "area": "344",
-    "duration": "",
-    "description": "454",
-    "result": "",
-    "note": "",
-    "services": [],
-    "images": [
-      {
-        "src": "/realizacie/foto/123/1794941347930-0-czm50.jpg",
-        "stage": "Galéria",
-        "original": "photo_1_2026-11-17_11-20-17.jpg"
-      },
-      {
-        "src": "/realizacie/foto/123/1794941347956-1-7lrik.jpg",
-        "stage": "Galéria",
-        "original": "photo_1_2026-11-17_11-23-48.jpg"
-      },
-      {
-        "src": "/realizacie/foto/123/1794941347989-2-jq8fn.jpg",
-        "stage": "Galéria",
-        "original": "photo_2_2026-11-17_11-20-17.jpg"
-      }
-    ],
-    "cover": "/realizacie/foto/123/1794941347930-0-czm50.jpg"
   }
 ];
