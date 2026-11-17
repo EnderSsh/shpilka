@@ -29,9 +29,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:6px 0 14px}h2{font-size:23px;margin:8px
 </div>
 <div class="admbox">
 <h2>2. Existujúce realizácie</h2>
-<div class="controls"><button class="admbtn primary" id="newBtn">+ Nová realizácia</button><label class="admbtn">Import pripraveného balíka ZIP<input id="zipInput" style="display:none" type="file" accept=".zip,application/zip"></label><button class="admbtn" id="refreshBtn">Obnoviť zo stránky</button></div>
+<div class="controls"><button class="admbtn primary" id="newBtn">+ Nová realizácia</button><label class="admbtn">Import pripraveného balíka ZIP<input id="zipInput" style="display:none" type="file" accept=".zip,application/zip"></label><button class="admbtn" id="refreshBtn">Načítať aktuálny web (zahodiť koncept)</button></div>
 <p class="notice">Balík ZIP obsahuje súbor realizacie/projects.js a fotografie v realizacie/foto/. Import pripraví zmeny; na web sa zapíšu až po kliknutí na „Publikovať na webe“.</p>
-<div id="list"></div>
+<p id="listStatus" role="status" aria-live="polite" class="notice" style="color:#d9b77b"></p><div id="list"></div>
 </div>
 <div class="admbox hide" id="editor">
 <div class="controls" style="justify-content:space-between"><h2 id="editorTitle">Nová realizácia</h2><button class="admbtn" id="cancelBtn">Zavrieť</button></div>
@@ -48,7 +48,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:6px 0 14px}h2{font-size:23px;margin:8px
 </div>
 <h3>Fotografie</h3><label class="admbtn">+ Pridať fotografie (viac naraz)<input style="display:none" id="photosInput" type="file" accept="image/*" multiple></label><p class="notice">Pri nových fotkách sa obrázky zmenšia kvôli rýchlosti webu. Pre každú fotku môžete vybrať etapu, poradie a titulnú fotografiu.</p>
 <div class="photoGrid" id="photoGrid"></div>
-<div class="controls" style="margin-top:22px"><button class="admbtn primary" id="saveBtn">Uložiť zmeny do zoznamu</button><button class="admbtn" id="cancelBtn2">Zrušiť</button></div>
+<div class="controls" style="margin-top:22px"><button class="admbtn" id="saveBtn">Uložiť koncept</button><button class="admbtn primary" id="savePublishBtn">Uložiť a publikovať na webe</button><button class="admbtn" id="cancelBtn2">Zrušiť</button></div>
 </div>
 <div class="admbox" id="publishBox">
 <h2>3. Publikovanie na shpilka.sk</h2>
